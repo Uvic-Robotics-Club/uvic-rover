@@ -1,5 +1,9 @@
 //#define USE_USBCON
 // rosrun rosserial_python serial_node.py /dev/ttyUSB0 _baud:=9600
+// This program's only purpose is to recieve the Speed and direction data from 
+// the Speed custom message and writes it on the correct pins
+// All pin information should be on the github wiki
+
 
 #include <ros.h>
 #include "runt_rover/Speed.h"
@@ -23,6 +27,7 @@
 #define FORWARD LOW
 #define REVERSE HIGH
 
+// callback function needed that checks if any data is incoming 
 void handleSpeed(const runt_rover::Speed speed_direction){
   
   int write_direction_left = speed_direction.leftdirection;
@@ -51,14 +56,14 @@ void handleSpeed(const runt_rover::Speed speed_direction){
 
 
 
-  //Initalize ros node and subscriber
-
-
+//Initalize ros node and subscriber to 'data' with handleback as callback function
 ros::NodeHandle nh;
 ros::Subscriber<runt_rover::Speed> sub("data",handleSpeed);
+
 void setup()
 {
-  nh.getHardware()->setBaud(9600);
+  // This command sets the baud rate to 9600 and is only necessary for the arduino nano 
+  nh.getHardware()->setBaud(9600); 
   pinMode(LEFT_BACK_PIN, OUTPUT);
   pinMode(LEFT_MIDDLE_PIN, OUTPUT);
   pinMode(LEFT_FRONT_PIN, OUTPUT);
@@ -74,15 +79,12 @@ void setup()
   pinMode(RIGHT_MIDDLE_DIR_PIN, OUTPUT);
   pinMode(RIGHT_FRONT_DIR_PIN, OUTPUT);
 
-
   nh.initNode();
   nh.subscribe(sub);
-
   
 }
 
 void loop()
 {
     nh.spinOnce();
-    
 }

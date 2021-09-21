@@ -1,22 +1,15 @@
 #!/usr/bin/env python 
  # joystick_demo.py
 # This program will read the x and y axis data from a USB connected joystick and
-# will convert that data into left/right speed values for the runt rover. Then it
-# will send those 2 values to the runt rover over serial in the form: 
-#
-# <start marker><left speed integer><seperator><right speed integer><end marker>
-#
-# The left and right speeds are values [-100, 100] where a negative value
-# specifies the reverse direction. The start marker is the '>' character. The
-# seperator is a comma. The end marker is the '<' character.
+# will convert that data into left/right speed values for the runt rover. 
+# This program then processes the left/right speed values and increments or decrements 
+# them accordingly
+
 
 import pygame
 from time import time
 import rospy
 from runt_rover.msg import Speed
-
-BAUD_RATE = 9600
-PACKAGE_SIZE = 9
 
 MAX_VAL = 100
 X_AXIS_DEADZONE = 0.14 * MAX_VAL
@@ -34,7 +27,10 @@ class joystick_demo:
         # Create an Speed Publisher joystick data
         pub = rospy.Publisher('data',Speed,queue_size=10)
         rospy.init_node('joystick_demo', anonymous=True)
-        rate = rospy.Rate(15)
+        # 15 is in Hz, I have found this value through trial and error
+        # Anything that is too low can overload the arduino buffer and cause it 
+        # to lag and do weird memory stuff
+        rate = rospy.Rate(15) 
         
         pygame.init()
         current_time = time()
@@ -136,7 +132,6 @@ class joystick_demo:
             msg.leftspeed = int(write_speed_left)
             msg.rightdirection = write_direction_right
             msg.leftdirection = write_direction_left
-            # TODO: UPDATE MSG FILE FOR DIRECTION
 
             rospy.loginfo(msg)
             pub.publish(msg)
@@ -146,6 +141,7 @@ class joystick_demo:
     
 
     # similar to map() in arduino
+    # remaps values from 0-100 to 0-255
     @staticmethod
     def remap(OldValue,OldMin,OldMax,NewMin,NewMax):
         OldRange = OldMax - OldMin
@@ -155,21 +151,9 @@ class joystick_demo:
             NewRange = NewMax - NewMin
             NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
         return NewValue
-        # OldRange = (OldMax - OldMin)  
-        # NewRange = (NewMax - NewMin)  
-        # NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
-
-
 
 def main():
     joystick_demo().control_runt_rover()
-
-
-
-    # try:
-    #     joystick_demo().control_runt_rover()
-    # except:
-    #     print("The arduino has been disconnected")
 
 if __name__ == '__main__':
     main()
