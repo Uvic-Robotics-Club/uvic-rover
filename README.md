@@ -3,7 +3,7 @@ ROS implementation of runt rover
 
 This assumes that you have Ubuntu 20.04, ROS Noetic with a catkin workspace, and rosserial installed. 
 
-Clone this repository inside <your catkin workspace>/src 
+Clone this repository inside < your catkin workspace >/src 
 
 Once cloned, As far as I know everytime a custom message is added, you need to run this command and remake the arduino libraries.
 ```
