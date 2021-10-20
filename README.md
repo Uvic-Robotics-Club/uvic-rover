@@ -21,6 +21,15 @@ catkin_make -j 1 -DCMAKE_CXX_FLAGS="--param ggc-min-expand=20"
 otherwise just run ```catkin_make```
 
 **Run file**
+
+After plugging in the GPS and before launching ROS nodes, to ensure the GPS node works properly, you must disable the `gpsd.socket` service that is by default enabled and running. Furthermore, we must manually start `gpsd` and point it to the port where GPS data is arriving to such that we can display it. The following commands need to be run only once unless you restart the VM/computer:
+
+```
+sudo systemctl stop gpsd.socket
+sudo systemctl disable gpsd.socket
+sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
+```
+
 there is a launch file inside the launch directory, this will bootup the arduino and the joystick and output on the same terminal.
 
 ```roslaunch run_runt_rover.launch```
