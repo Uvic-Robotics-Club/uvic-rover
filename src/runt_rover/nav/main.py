@@ -1,10 +1,9 @@
-#!/usr/bin/env python 
 import dbus
 import gps
 import rospy
 from runt_rover.msg import Coordinates
-from nav.nav_report_handlers import TPVReportHandler, DeviceReportHandler
-from utils.gps_tpv_mode_enum import TPV_MODE
+from runt_rover.nav.report_handlers import TPVReportHandler, DeviceReportHandler
+from runt_rover.utils.gps_tpv_mode_enum import TPV_MODE
 
 # Possible TODOs to improve GPS behavior:
 # - Implement class as a state machine where each state corresponds to a state of the module/application
@@ -66,7 +65,3 @@ class GPSHandler:
             except StopIteration:
                 session = None
                 print("GPSD has terminated")
-
-if __name__ == '__main__':
-    gps_handler = GPSHandler()
-    gps_handler.run()
