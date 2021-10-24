@@ -12,7 +12,7 @@ from runt_rover.utils.gps_tpv_mode_enum import TPV_MODE
 
 GPS_HOST_NAME = 'localhost'
 GPS_SOCKET = '2947'
-GPS_DEVICE_FILE = '/dev/ttyUSB0'
+GPS_DEVICE_FILE_NAME = 'ttyUSB0'
 
 class GPSHandler:
     def __init__(self):
