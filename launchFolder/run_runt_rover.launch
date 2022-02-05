@@ -1,6 +1,7 @@
 <launch>
     <node pkg="runt_rover" type="joystick_demo" name="JoyStick" output="screen"/>
     <node pkg="runt_rover" type="nav" name="NAV" output="screen"/>
+    <node pkg="runt_rover" type="comms" name="COMMS" output="screen"/>
 
     <node name="serial_node"    pkg="rosserial_python"  type="serial_node.py" output="screen">
     <param name="port"          type="string"           value="/dev/ttyUSB0"/>

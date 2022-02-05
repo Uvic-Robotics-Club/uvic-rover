@@ -176,6 +176,7 @@ rosserial_generate_ros_lib(
 catkin_install_python(PROGRAMS
    nodes/joystick_demo
    nodes/nav
+   nodes/comms
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
