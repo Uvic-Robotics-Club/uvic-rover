@@ -135,7 +135,7 @@ class NetworkManager():
             })
         return available_wifi_list
 
-    def get_network_interfaces_status(self):
+    def list_network_interfaces_status(self):
         '''
         Returns a list of the device's network interfaces, along with their status.
 
