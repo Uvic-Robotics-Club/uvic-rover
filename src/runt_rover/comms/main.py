@@ -7,5 +7,7 @@ class CommsHandler():
         self.base_station_wifi_SSID = rospy.get_param("/base_station_wifi_SSID")
         self.base_station_wifi_pwd = rospy.get_param("/base_station_wifi_pwd")
 
-        self.network_manager.connect_to_wifi_network(self.base_station_wifi_SSID, self.base_station_wifi_pwd)
+        #self.network_manager.connect_to_wifi_network(self.base_station_wifi_SSID, self.base_station_wifi_pwd)
         #self.network_manager.disconnect_from_wifi_network(self.base_station_wifi_SSID)
+        print(self.network_manager.list_available_wifi_networks())
+        #print(self.network_manager.get_network_interfaces_status())

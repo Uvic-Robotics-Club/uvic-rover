@@ -19,9 +19,8 @@ class NetworkManager():
         assert type(ssid) == str
         assert type(password) == str
         
-        command_to_execute = 'nmcli --wait 20 device wifi connect {} password "{}"'.format(ssid, password)
-        
         try:
+            command_to_execute = 'nmcli --wait 20 device wifi connect {} password "{}"'.format(ssid, password)
             subprocess.check_output(command_to_execute, shell=True)
         except subprocess.CalledProcessError as err:
             print('Error: connection to WiFi network failed. Return code: {}, Output: {}'.format(err.returncode, err.output))
@@ -37,12 +36,12 @@ class NetworkManager():
         Returns:
             (bool): True if the connection has been deactivated successfully, False otherwise
         Raises:
+            subprocess.CalledProcessError: Raised when process returns a non-zero exit status.
         '''
         assert type(ssid) == str
 
-        command_to_execute = 'nmcli connection down {}'.format(ssid)
-
         try:
+            command_to_execute = 'nmcli connection down {}'.format(ssid)
             subprocess.check_output(command_to_execute, shell=True)
         except subprocess.CalledProcessError as err:
             print('Error: failed to disconnect from network. Return code: {}, Output: {}'.format(err.returncode, err.output))
@@ -89,20 +88,31 @@ class NetworkManager():
             * IN-USE: Is the host currently connected to that network
             * BSSID: Basic Service Set Identifier (access point)
             * SSID: Service Set Identifier. Name of network
-            * MODE: 
+            * MODE, CHAN, RATE, SIGNAL
+        NOTE: SECURITY column is not returned as parsing was too cumbersome due to BARS characters preceding it, and do not need
+              that information. 
 
         Parameters:
             None
         Returns:
             available_wifi_list (list of dictionaries): List of dictionaries, where each list item represents a single
-                detected WiFi network.
+                detected WiFi network. If no WiFi networks found, returns empty list.
+        Raises:
+            subprocess.CalledProcessError: Raised when process returns a non-zero exit status.
         '''
-        # TODOs:
-        #  - Handle if wi-fi not available
-        #  - Include security column as it is more difficult to parse due to BARS column
 
-        # First slice [2:] removes "b'" left over from bytes to string conversion, [:-1] removes last line that is empty character
-        unparsed_output_by_line = str(subprocess.check_output('nmcli device wifi list', shell=True))[2:].split('\\n')[:-1]
+        try:
+            # First slice [2:] removes "b'" left over from bytes to string conversion, [:-1] removes last line that is empty character
+            unparsed_output_by_line = str(subprocess.check_output('nmcli device wifi list', shell=True))[2:].split('\\n')[:-1]
+        except subprocess.CalledProcessError as err:
+            print('Error: failed to list available wifi networks. Return code: {}, Output: {}'.format(err.returncode, err.output))
+            raise err
+
+        # If no networks provided, return empty list
+        if len(unparsed_output_by_line) == 0:
+            print('Warning: no available WiFi networks were found.')
+            return []
+
         headers = unparsed_output_by_line[0]
         headers_keys = headers.split()
         
@@ -125,13 +135,50 @@ class NetworkManager():
             })
         return available_wifi_list
 
+    def get_network_interfaces_status(self):
+        '''
+        Returns a list of the device's network interfaces, along with their status.
+
+        Parameters:
+            None
+        Returns:
+            (list): List of dictionaries, each of which are a device's network interface.
+        Raises:
+            subprocess.CalledProcessError: Raised when process returns a non-zero exit status.
+        '''
+
+        try:
+            unparsed_output_by_line = str(subprocess.check_output('nmcli device status', shell=True))[2:].split('\\n')[:-1]
+        except subprocess.CalledProcessError as err:
+            print('Error: failed to get network interfaces status. Return code: {}, Output: {}'.format(err.returncode, err.output))
+            raise err
+
+        headers = unparsed_output_by_line[0]
+        headers_keys = headers.split()
+
+        # Assert header keys are expected output, and get key indexes to allow for correct parsing
+        self.__assert_expected_keys_list(headers_keys, 4, ['DEVICE', 'TYPE', 'STATE', 'CONNECTION'])
+        headers_key_indexes = self.__get_header_key_indexes(headers, ['DEVICE', 'TYPE', 'STATE', 'CONNECTION'])
+
+        network_interfaces_list = []
+        for line in unparsed_output_by_line[1:]:
+            # Append network interface details to list
+            network_interfaces_list.append({
+                'DEVICE': line[headers_key_indexes['DEVICE']: headers_key_indexes['TYPE']].strip(),
+                'TYPE': line[headers_key_indexes['TYPE']: headers_key_indexes['STATE']].strip(),
+                'STATE': line[headers_key_indexes['STATE']: headers_key_indexes['CONNECTION']].strip(),
+                'CONNECTION': line[headers_key_indexes['CONNECTION']:].strip()
+            })
+
+        return network_interfaces_list
+
     def __assert_expected_keys_list(self, actual_keys, expected_length, expected_keys):
         '''
         Asserts that the list keys contains the expected strings at the correct location.
 
         Parameters:
             actual_keys (list): A list of keys to be analyzed
-            expected_length (int): Expected lenght of actual_keys
+            expected_length (int): Expected length of actual_keys
             expected_keys (list): A list of keys expected to be in the same order as actual_keys
         Returns:
             None
