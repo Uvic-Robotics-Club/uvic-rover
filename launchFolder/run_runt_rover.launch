@@ -1,6 +1,6 @@
 <launch>
-    <param name="base_station_wifi_SSID" type="string" value="<network_name>"/>
-    <param name="base_station_wifi_pwd"  type="string" value="<network_pwd>"/>
+    <param name="base_station_wifi_SSID" type="string" value="network_name"/>
+    <param name="base_station_wifi_pwd"  type="string" value="network_pwd"/>
     <node pkg="runt_rover" type="joystick_demo" name="JoyStick" output="screen"/>
     <!--<node pkg="runt_rover" type="nav" name="NAV" output="screen"/>-->
     <node pkg="runt_rover" type="comms" name="COMMS" output="screen"/>
