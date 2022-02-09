@@ -1,6 +1,6 @@
-import subprocess, os
+import subprocess
 
-class NetworkManager():
+class WifiManager():
     def __init__(self):
         pass
 

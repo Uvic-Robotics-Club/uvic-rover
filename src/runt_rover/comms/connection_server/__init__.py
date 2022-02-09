@@ -1,9 +1,7 @@
 from flask import Flask, request
-import os
 from runt_rover.comms.connection_client import ConnectionClient
 from runt_rover.comms.state import State
 
-connection_client = ConnectionClient()
 state = State()
 
 # Create and configure server
@@ -16,7 +14,7 @@ app.config.from_mapping(
 def root():
     return {'status': 'success', 'message': 'Rover server is alive!'}
 
-@app.route('/', methods=['GET'])
+@app.route('/request_connection', methods=['GET'])
 def request_connection():
     '''
     This method is called by the base station to request the rover to 
@@ -30,7 +28,10 @@ def request_connection():
         response['message'] = 'Connection already exists, cannot start new connection.'
         return response
 
-    connection_client.connect_to_http_host(remote_addr)
+    ConnectionClient.connect_to_http_host(remote_addr)
+
+    response['status'] = 'success'
+    response['message'] = 'Sent connection request to base station.'
 
 if __name__ == '__main__':
     app.run()
