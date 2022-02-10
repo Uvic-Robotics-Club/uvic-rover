@@ -6,7 +6,7 @@ state = State()
 class ConnectionClient():
 
     @staticmethod
-    def connect_to_http_host(host_address):
+    def connect_to_http_host(host_address, port):
         '''
         Attempts to establish an HTTP connection to the base station server. The
         'connection' is an abstraction on top of the HTTP requests, which allows the
@@ -14,9 +14,10 @@ class ConnectionClient():
         and base station.
         '''
         assert(type(host_address)) == str
+        assert(type(port)) == int
 
         try:
-            request_url = 'http://{}/connect'.format(host_address)
+            request_url = 'http://{}:{}/connect'.format(host_address, port)
             response = requests.get(request_url, timeout=5.0)
             assert response.status_code == 200
         except requests.exceptions.Timeout as ex:
@@ -33,17 +34,18 @@ class ConnectionClient():
         return True
 
     @staticmethod
-    def send_telemetry(data):
+    def send_telemetry(data, port):
         '''
         Sends telemetry data to the base station, if a connection exists
         '''
         assert(type(data)) == dict
+        assert(type(port)) == int
 
         if not state.get_attribute('connection_established'):
             return False # TODO raise exception?
 
         try:
-            request_url = 'http://{}/send_telemetry'.format(state.get_attribute('connection_remote_addr'))
+            request_url = 'http://{}:{}/send_telemetry'.format(state.get_attribute('connection_remote_addr'), port)
             response = requests.post(request_url, json=data, timeout=5.0)
             assert response.status_code == 200
         except requests.exceptions.Timeout as ex:
@@ -54,17 +56,18 @@ class ConnectionClient():
             raise err2
 
     @staticmethod
-    def disconnect_from_http_host():
+    def disconnect_from_http_host(port):
         '''
         Disconnects from the base station server. This indicates to the rover that the
         base station is not actively processing requests from the rover.
         '''
+        assert type(port) == int
 
         if not state.get_attribute('connection_established'):
             return False # TODO raise exception?
 
         try:
-            request_url = 'http://{}/disconnect'.format(state.get_attribute('connection_remote_addr'))
+            request_url = 'http://{}:{}/disconnect'.format(state.get_attribute('connection_remote_addr'), port)
             response = requests.get(request_url, timeout=5.0)
             assert response.status_code == 200
         except requests.exceptions.Timeout as ex:

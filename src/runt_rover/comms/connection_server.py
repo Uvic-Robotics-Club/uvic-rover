@@ -1,9 +1,11 @@
 from flask import Flask, request
 import requests
+import rospy
 from runt_rover.comms.connection_client import ConnectionClient
 from runt_rover.comms.state import State
 
 state = State()
+base_station_port = rospy.get_param("/base_station_port")
 
 # Create and configure server
 app = Flask(__name__, instance_relative_config=True)
@@ -31,7 +33,7 @@ def request_connection():
         return response
 
     try:
-        ConnectionClient.connect_to_http_host(remote_addr)
+        ConnectionClient.connect_to_http_host(remote_addr, base_station_port)
     except requests.exceptions.Timeout as ex:
         response['status'] = 'failure'
         response['message'] = 'Timeout: connection to base station failed.'
