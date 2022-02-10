@@ -17,4 +17,4 @@ class CommsHandler():
         assert self.wifi_manager.is_connected_to_wifi()
 
         # Start server
-        app.run()
+        app.run(host='0.0.0.0')
