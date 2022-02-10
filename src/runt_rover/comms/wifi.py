@@ -62,9 +62,13 @@ class WifiManager():
             current_active_connections_list (list of dictionaries): List of dictionaries, where each list item represents a single
                 active connection.
         '''
-
         unparsed_output_by_line = str(subprocess.check_output('nmcli connection show --active', shell=True))[2:].split('\\n')[:-1]
+        
+        # Get headers. If no headers are present, this means no connections currently active, and return empty list.
         headers = unparsed_output_by_line[0]
+        if len(headers) == 0:
+            return []
+
         headers_keys = headers.split()
 
         # Assert header keys are expected output, and get key indexes to allow for correct parsing
