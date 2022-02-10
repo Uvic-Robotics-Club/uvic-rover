@@ -16,16 +16,21 @@ class ConnectionClient():
         assert(type(host_address)) == str
 
         try:
-            request_url = '{}/connect'.format(host_address)
-            response = requests.get(request_url)
+            request_url = 'http://{}/connect'.format(host_address)
+            response = requests.get(request_url, timeout=5.0)
             assert response.status_code == 200
-        except AssertionError as err:
-            pass
+        except requests.exceptions.Timeout as ex:
+            raise ex
+        except requests.exceptions.ConnectionError as err1:
+            raise err1
+        except AssertionError as err2:
+            raise err2
 
         json_data = response.json()
         state.set_attribute('connection_established', True)
         state.set_attribute('connection_remote_addr', host_address)
         state.set_attribute('connection_id', json_data['connection_id'])
+        return True
 
     @staticmethod
     def send_telemetry(data):
@@ -38,11 +43,15 @@ class ConnectionClient():
             return False # TODO raise exception?
 
         try:
-            request_url = '{}/send_telemetry'.format(state.get_attribute('connection_remote_addr'))
-            response = requests.post(request_url, json=data)
+            request_url = 'http://{}/send_telemetry'.format(state.get_attribute('connection_remote_addr'))
+            response = requests.post(request_url, json=data, timeout=5.0)
             assert response.status_code == 200
-        except AssertionError as err:
-            pass
+        except requests.exceptions.Timeout as ex:
+            raise ex
+        except requests.exceptions.ConnectionError as err1:
+            raise err1
+        except AssertionError as err2:
+            raise err2
 
     @staticmethod
     def disconnect_from_http_host():
@@ -55,11 +64,15 @@ class ConnectionClient():
             return False # TODO raise exception?
 
         try:
-            request_url = '{}/disconnect'.format(state.get_attribute('connection_remote_addr'))
-            response = requests.get(request_url)
+            request_url = 'http://{}/disconnect'.format(state.get_attribute('connection_remote_addr'))
+            response = requests.get(request_url, timeout=5.0)
             assert response.status_code == 200
-        except AssertionError as err:
-            pass
+        except requests.exceptions.Timeout as ex:
+            raise ex
+        except requests.exceptions.ConnectionError as err1:
+            raise err1
+        except AssertionError as err2:
+            raise err2
 
         state.set_attribute('connection_established', False)
         state.set_attribute('connection_remote_addr', None)

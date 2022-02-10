@@ -172,6 +172,24 @@ class WifiManager():
 
         return network_interfaces_list
 
+    def is_connected_to_wifi(self):
+        '''
+        Determines whether the host is currently connected to a WiFi network.
+
+        Parameters:
+            None
+        Returns:
+            (boolean): True if connected to wifi, False otherwise.
+        '''
+        connections = self.list_current_active_connections()
+        for connection in connections:
+            if connection['TYPE'] == 'wifi':
+                return True
+
+        return False
+
+
+
     def __assert_expected_keys_list(self, actual_keys, expected_length, expected_keys):
         '''
         Asserts that the list keys contains the expected strings at the correct location.

@@ -1,5 +1,7 @@
 import rospy
 from runt_rover.comms.wifi import WifiManager
+from runt_rover.comms.connection_server import *
+
 
 class CommsHandler():
     def __init__(self):
@@ -9,10 +11,10 @@ class CommsHandler():
         self.base_station_wifi_SSID = rospy.get_param("/base_station_wifi_SSID")
         self.base_station_wifi_pwd = rospy.get_param("/base_station_wifi_pwd")
 
-        #self.network_manager.disconnect_from_wifi_network(self.base_station_wifi_SSID)
-        #time.sleep(10)
-        #self.network_manager.connect_to_wifi_network(self.base_station_wifi_SSID, self.base_station_wifi_pwd)
-        #print(self.network_manager.list_available_wifi_networks())
-        #print(self.network_manager.list_network_interfaces_status())
+        # Connect to WiFi network.
+        if not self.wifi_manager.is_connected_to_wifi():
+            self.wifi_manager.connect_to_wifi_network(self.base_station_wifi_SSID, self.base_station_wifi_pwd)
+        assert self.wifi_manager.is_connected_to_wifi()
 
-        #print(self.connection_client.connect_to_http_host('127.0.0.1'))
+        # Start server
+        app.run()
