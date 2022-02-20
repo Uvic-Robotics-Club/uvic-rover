@@ -17,7 +17,7 @@ class ConnectionClient():
         assert(type(port)) == int
 
         try:
-            request_url = 'http://{}:{}/connect'.format(host_address, port)
+            request_url = 'http://{}:{}/rover/connect'.format(host_address, port)
             response = requests.get(request_url, timeout=5.0)
             assert response.status_code == 200
         except requests.exceptions.Timeout as ex:
@@ -45,7 +45,7 @@ class ConnectionClient():
             return False # TODO raise exception?
 
         try:
-            request_url = 'http://{}:{}/send_telemetry'.format(state.get_attribute('connection_remote_addr'), port)
+            request_url = 'http://{}:{}/rover/send_telemetry'.format(state.get_attribute('connection_remote_addr'), port)
             response = requests.post(request_url, json=data, timeout=5.0)
             assert response.status_code == 200
         except requests.exceptions.Timeout as ex:
@@ -67,7 +67,7 @@ class ConnectionClient():
             return False # TODO raise exception?
 
         try:
-            request_url = 'http://{}:{}/disconnect'.format(state.get_attribute('connection_remote_addr'), port)
+            request_url = 'http://{}:{}/rover/disconnect'.format(state.get_attribute('connection_remote_addr'), port)
             response = requests.get(request_url, timeout=5.0)
             assert response.status_code == 200
         except requests.exceptions.Timeout as ex:

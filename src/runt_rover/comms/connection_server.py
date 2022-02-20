@@ -1,8 +1,11 @@
+from ast import Assert
 from flask import Flask, request
 import requests
 import rospy
+from runt_rover.comms.commands import CommandType, CommandParser
 from runt_rover.comms.connection_client import ConnectionClient
 from runt_rover.comms.state import State
+from runt_rover.comms.ros import ROS
 
 state = State()
 base_station_port = rospy.get_param("/base_station_port")
@@ -50,6 +53,48 @@ def request_connection():
     response['status'] = 'success'
     response['message'] = 'Sent connection request to base station.'
     return response
+
+@app.route('/send_command', methods=['POST'])
+def send_command():
+    '''
+    This method is called by the base stattion to send a command to
+    the rover.
+    '''
+    response = {'status': None}
+    remote_addr = request.remote_addr
+    args = request.json
+
+    try:
+        assert 'type' in args, 'type argument not provided.'
+        assert 'params' in args, 'params argument not provided.'
+    except AssertionError as err:
+        response['status'] = 'failure'
+        response['message'] = str(err)
+
+    # Fail if connection is not established.
+    if not state.get_attribute('connection_established'):
+        response['status'] = 'failure'
+        response['message'] = 'No connection established, unable to process command.'
+        return response
+
+    # Ensure request comes from correct remote addr.
+    if state.get_attribute('connection_remote_addr') != remote_addr:
+        response['status'] = 'failure'
+        response['message'] = 'Remote address does not match current connection base station host address.'
+        return response
+
+    # Validate that command is recognized.
+    try:
+        command_type = CommandType(args['type'])
+    except ValueError:
+        response['status'] = 'failure'
+        response['message'] = 'Command Type "{}" not recognized.'.format(args['type'])
+        return response
+
+    # Parse command, and publish to ROS
+    command_params = CommandParser.parse_command(command_type, args['params'])
+    ROS.publish_command(command_type, command_params)
+
 
 if __name__ == '__main__':
     app.run()

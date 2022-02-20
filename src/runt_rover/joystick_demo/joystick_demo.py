@@ -9,7 +9,7 @@
 import pygame
 from time import time
 import rospy
-from runt_rover.msg import Speed
+from runt_rover.msg import DriveTrain
 
 MAX_VAL = 100
 X_AXIS_DEADZONE = 0.14 * MAX_VAL
@@ -25,7 +25,7 @@ class joystick_demo:
     def control_runt_rover(self):
 
         # Create an Speed Publisher joystick data
-        pub = rospy.Publisher('data',Speed,queue_size=10)
+        pub = rospy.Publisher('drive_train',DriveTrain,queue_size=10)
         rospy.init_node('joystick_demo', anonymous=True)
         # 15 is in Hz, I have found this value through trial and error
         # Anything that is too low can overload the arduino buffer and cause it 
@@ -127,7 +127,7 @@ class joystick_demo:
 
 
 
-            msg = Speed()
+            msg = DriveTrain()
             msg.rightspeed = int(write_speed_right)
             msg.leftspeed = int(write_speed_left)
             msg.rightdirection = write_direction_right
