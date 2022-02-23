@@ -17,7 +17,7 @@ GPS_DEVICE_FILE_NAME = 'ttyUSB0'
 class GPSHandler:
     def __init__(self):
         self.pub = rospy.Publisher('gps_coordinates', Coordinates, queue_size=10)
-        rospy.init_node('GPS', anonymous=True)
+        rospy.init_node('GPS')
         self.rate = rospy.Rate(10) # 10Hz
 
         # GPS setup

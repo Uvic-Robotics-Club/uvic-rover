@@ -20,38 +20,36 @@ app.config.from_mapping(
 def root():
     return {'status': 'success', 'message': 'Rover server is alive!'}
 
-@app.route('/request_connection', methods=['GET'])
-def request_connection():
+@app.route('/connect', methods=['GET'])
+def connect():
     '''
-    This method is called by the base station to request the rover to 
-    connect to the base station.
+    This method is called by the base station to begin a connection.
     '''
     response = {'status': None}
+    args = dict(request.args)
     remote_addr = request.remote_addr
 
-    # Fail if connection is already established
-    if state.get_attribute('connection_established'):
-        response['status'] = 'failure'
-        response['message'] = 'Connection already exists, cannot start new connection.'
+    try:
+        assert 'conn_id' in args, 'conn_id parameter not provided.'
+    except AssertionError as err:
+        response['status'] = 'Malformed request'
+        response['message'] = str(err)
         return response
 
-    try:
-        ConnectionClient.connect_to_http_host(remote_addr, base_station_port)
-    except requests.exceptions.Timeout as ex:
-        response['status'] = 'failure'
-        response['message'] = 'Timeout: connection to base station failed.'
-        return response
-    except requests.exceptions.ConnectionError as err1:
-        response['status'] = 'failure'
-        response['message'] = 'Connection error: Most likely connection refused due to port not being open.'
-        return response
-    except AssertionError as err2:
-        response['status'] = 'failure'
-        response['message'] = 'Response status code to connect to base station is not 200.'
-        return response
+    # Fail if connection is already established
+    # TODO: Determine if this is appropriate
+    #if state.get_attribute('connection_established'):
+    #    response['status'] = 'failure'
+    #    response['message'] = 'Connection already exists, cannot start new connection.'
+    #    return response
+
+    new_connection_id = int(args['conn_id'])
+    state.set_attribute('connection_id', new_connection_id)
+    state.set_attribute('connection_remote_addr', remote_addr)
+    state.set_attribute('connection_established', True)
 
     response['status'] = 'success'
-    response['message'] = 'Sent connection request to base station.'
+    response['message'] = 'Established connection with ID {}'.format(new_connection_id)
     return response
 
 @app.route('/send_command', methods=['POST'])
@@ -66,7 +64,6 @@ def send_command():
 
     try:
         assert 'type' in args, 'type argument not provided.'
-        assert 'params' in args, 'params argument not provided.'
     except AssertionError as err:
         response['status'] = 'failure'
         response['message'] = str(err)
@@ -92,8 +89,45 @@ def send_command():
         return response
 
     # Parse command, and publish to ROS
-    command_params = CommandParser.parse_command(command_type, args['params'])
+    try:
+        command_params = CommandParser.parse_command(command_type, args)
+    except KeyError as err:
+        response['status'] = 'failure'
+        response['message'] = 'Failed to find key: {} in {} command.'.format(str(err), args['type'])
+        return response
+
     ROS.publish_command(command_type, command_params)
+
+    response['status'] = 'success'
+    response['message'] = 'Published command to all nodes.'
+    return response
+
+@app.route('/disconnect', methods=['GET'])
+def disconnect():
+    '''
+    This method is called by the base station to terminate the connection
+    to the base station, if any. Ensure only the address associated with the
+    connection is able to terminate the connection.
+    '''
+    response = {'status': None}
+    remote_addr = request.remote_addr
+
+    if not state.get_attribute('connection_established'):
+        response['status'] = 'failure'
+        response['message'] = 'No established connection exists.'
+        return response
+
+    if state.get_attribute('connection_remote_addr') != remote_addr:
+        response['status'] = 'failure'
+        response['message'] = 'Cannot terminate connection from another host.'
+
+    state.set_attribute('connection_established', False)
+    state.set_attribute('connection_remote_addr', None)
+    state.set_attribute('connection_id', None)
+
+    response['status'] = 'success'
+    response['message'] = 'Terminated connection to rover.'
+    return response
 
 
 if __name__ == '__main__':

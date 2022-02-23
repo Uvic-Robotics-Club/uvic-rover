@@ -6,7 +6,7 @@ state = State()
 class ConnectionClient():
 
     @staticmethod
-    def connect_to_http_host(host_address, port):
+    def connect(host_address, port):
         '''
         Attempts to establish an HTTP connection to the base station server. The
         'connection' is an abstraction on top of the HTTP requests, which allows the
@@ -56,7 +56,7 @@ class ConnectionClient():
             raise err2
 
     @staticmethod
-    def disconnect_from_http_host(port):
+    def disconnect(port):
         '''
         Disconnects from the base station server. This indicates to the rover that the
         base station is not actively processing requests from the rover.

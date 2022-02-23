@@ -25,23 +25,24 @@ for pub_name in PUBLISHERS_PARAMS:
 class ROS():
 
     @staticmethod
-    def publish_command(command_type, **command_params):
+    def publish_command(command_type, command_params):
         assert type(command_type) == CommandType
+        assert type(command_params) == dict
 
         if command_type == CommandType.DRIVE_TRAIN:
-            ROS.publish_drive_train_msg(**command_params)
+            ROS.publish_drive_train_msg(command_params)
 
     @staticmethod
-    def publish_drive_train_msg(left_speed, right_speed, right_direction, left_direction):
-        assert type(left_speed) == int
-        assert type(right_speed) == int
-        assert type(left_direction) == int
-        assert type(right_direction) == int
+    def publish_drive_train_msg(command_params):
+        assert type(command_params['left_speed']) == int
+        assert type(command_params['right_speed']) == int
+        assert type(command_params['left_direction']) == int
+        assert type(command_params['right_direction']) == int
 
         msg = DriveTrain()
-        msg.leftspeed = left_speed
-        msg.rightspeed = right_speed
-        msg.rightdirection = right_direction
-        msg.leftdirection = left_direction
+        msg.leftspeed = command_params['left_speed']
+        msg.rightspeed = command_params['right_speed']
+        msg.leftdirection = command_params['left_direction']
+        msg.rightdirection = command_params['right_direction']
 
         publishers['drive_train'].publish(msg)

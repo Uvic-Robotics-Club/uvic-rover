@@ -26,7 +26,7 @@ class joystick_demo:
 
         # Create an Speed Publisher joystick data
         pub = rospy.Publisher('drive_train',DriveTrain,queue_size=10)
-        rospy.init_node('joystick_demo', anonymous=True)
+        rospy.init_node('joystick_demo')
         # 15 is in Hz, I have found this value through trial and error
         # Anything that is too low can overload the arduino buffer and cause it 
         # to lag and do weird memory stuff
