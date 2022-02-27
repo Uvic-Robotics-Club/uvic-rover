@@ -4,10 +4,11 @@ import requests
 import rospy
 from runt_rover.comms.commands import CommandType, CommandParser
 from runt_rover.comms.connection_client import ConnectionClient
-from runt_rover.comms.state import State
+from runt_rover.comms.state import NodeState, TelemetryState
 from runt_rover.comms.ros import ROS
 
-state = State()
+node_state = NodeState()
+telemetry_state = TelemetryState()
 base_station_port = rospy.get_param("/base_station_port")
 
 # Create and configure server
@@ -44,9 +45,9 @@ def connect():
     #    return response
 
     new_connection_id = int(args['conn_id'])
-    state.set_attribute('connection_id', new_connection_id)
-    state.set_attribute('connection_remote_addr', remote_addr)
-    state.set_attribute('connection_established', True)
+    node_state.set_attribute('connection_id', new_connection_id)
+    node_state.set_attribute('connection_remote_addr', remote_addr)
+    node_state.set_attribute('connection_established', True)
 
     response['status'] = 'success'
     response['message'] = 'Established connection with ID {}'.format(new_connection_id)
@@ -69,13 +70,13 @@ def send_command():
         response['message'] = str(err)
 
     # Fail if connection is not established.
-    if not state.get_attribute('connection_established'):
+    if not node_state.get_attribute('connection_established'):
         response['status'] = 'failure'
         response['message'] = 'No connection established, unable to process command.'
         return response
 
     # Ensure request comes from correct remote addr.
-    if state.get_attribute('connection_remote_addr') != remote_addr:
+    if node_state.get_attribute('connection_remote_addr') != remote_addr:
         response['status'] = 'failure'
         response['message'] = 'Remote address does not match current connection base station host address.'
         return response
@@ -102,6 +103,27 @@ def send_command():
     response['message'] = 'Published command to all nodes.'
     return response
 
+@app.route('/get_rover_telemetry', methods=['GET'])
+def get_rover_telemetry():
+    '''
+    This method is called by the base station to fetch the latest telemetry
+    data stored for the rover.
+    '''
+    response = {'status': None}
+    remote_addr = request.remote_addr
+
+    if not node_state.get_attribute('connection_established'):
+        response['status'] = 'failure'
+        response['message'] = 'No established connection exists.'
+        return response
+
+    if node_state.get_attribute('connection_remote_addr') != remote_addr:
+        response['status'] = 'failure'
+        response['message'] = 'Cannot terminate connection from another host.'
+
+    response['data'] = telemetry_state.get_all_attributes()
+    return response
+
 @app.route('/disconnect', methods=['GET'])
 def disconnect():
     '''
@@ -112,18 +134,18 @@ def disconnect():
     response = {'status': None}
     remote_addr = request.remote_addr
 
-    if not state.get_attribute('connection_established'):
+    if not node_state.get_attribute('connection_established'):
         response['status'] = 'failure'
         response['message'] = 'No established connection exists.'
         return response
 
-    if state.get_attribute('connection_remote_addr') != remote_addr:
+    if node_state.get_attribute('connection_remote_addr') != remote_addr:
         response['status'] = 'failure'
         response['message'] = 'Cannot terminate connection from another host.'
 
-    state.set_attribute('connection_established', False)
-    state.set_attribute('connection_remote_addr', None)
-    state.set_attribute('connection_id', None)
+    node_state.set_attribute('connection_established', False)
+    node_state.set_attribute('connection_remote_addr', None)
+    node_state.set_attribute('connection_id', None)
 
     response['status'] = 'success'
     response['message'] = 'Terminated connection to rover.'

@@ -12,15 +12,26 @@ depending on the data required:
 '''
 import rospy
 from runt_rover.comms.commands import CommandType
-from runt_rover.msg import DriveTrain
+from runt_rover.msg import DriveTrain, Coordinates
+from runt_rover.comms.state import TelemetryState
+
+telemetry_state = TelemetryState()
 
 PUBLISHERS_PARAMS = {
     'drive_train': {'data_class': DriveTrain, 'queue_size': 10}
 }
 
+SUBSCRIBERS_PARAMS = {
+    'gps_coordinates': {'data_class': Coordinates, 'callback_func': (lambda x: x)}
+}
+
 publishers = {}
 for pub_name in PUBLISHERS_PARAMS:
     publishers[pub_name] = rospy.Publisher(name=pub_name, data_class=PUBLISHERS_PARAMS[pub_name]['data_class'], queue_size=PUBLISHERS_PARAMS[pub_name]['queue_size'])
+
+subscribers = {}
+for sub_name in SUBSCRIBERS_PARAMS:
+    subscribers[sub_name] = rospy.Subscriber(name=sub_name, data_class=SUBSCRIBERS_PARAMS[sub_name]['data_class'], callback=SUBSCRIBERS_PARAMS[sub_name]['callback_func'])
 
 class ROS():
 
@@ -46,3 +57,17 @@ class ROS():
         msg.rightdirection = command_params['right_direction']
 
         publishers['drive_train'].publish(msg)
+
+    @staticmethod
+    def subscribe_gps_coordinates(data):
+        assert type(data) == Coordinates
+
+        coords = {
+            'latitude': data.latitude,
+            'longitude': data.longitude,
+            'altitude_msl': data.altitude_msl,
+            'mode': data.mode,
+            'message': data.message
+        }
+
+        telemetry_state.set_telemetry_value('gps_coordinates', coords)
