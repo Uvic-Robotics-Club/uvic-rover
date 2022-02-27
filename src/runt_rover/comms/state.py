@@ -51,7 +51,7 @@ class NodeState(metaclass=Singleton):
         # Release lock
         self.__lock_set_attr.release()
 
-class TelemetryState(metclass=Singleton):
+class TelemetryState(metaclass=Singleton):
     __lock_set_attr = Lock()
     __data = {}
 

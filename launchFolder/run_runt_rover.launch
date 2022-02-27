@@ -4,9 +4,9 @@
     <param name="base_station_port" type="int" value="5000"/>
     <param name="comms_server_port" type="int" value="5001"/>
 
-    <node pkg="runt_rover" type="joystick_demo" name="JoyStick" output="screen"/>
+    <!--<node pkg="runt_rover" type="joystick_demo" name="JoyStick" output="screen"/>-->
     <!--<node pkg="runt_rover" type="nav" name="NAV" output="screen"/>-->
-    <node pkg="runt_rover" type="comms" name="COMMS" output="screen"/>
+    <node pkg="runt_rover" type="comms" name="comms" output="screen"/>
     <node name="serial_node" pkg="rosserial_python"  type="serial_node.py" output="screen">
         <param name="port" type="string" value="/dev/ttyUSB0"/>
         <param name="baud" type="int" value="9600"/>
