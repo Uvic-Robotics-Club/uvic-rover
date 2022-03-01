@@ -5,12 +5,22 @@ This assumes that you have Ubuntu 20.04, ROS Noetic with a catkin workspace, and
 
 Clone this repository inside < your catkin workspace >/src 
 
-Once cloned, As far as I know everytime a custom message is added, you need to run this command and remake the arduino libraries.
+**Setting up Rosserial:**
+Need to run this command to make the specific library with the custom message.
+Check the example in this link for the correct arguements
+[link to this](http://wiki.ros.org/rosserial_arduino/Tutorials/Adding%20Custom%20Messages)
+
+```
+rosrun rosserial_client make_library.py path_to_libraries your_message_package
+```
+
+Once above command is run, As far as I know everytime a custom message is added, you need to run this command and remake the arduino libraries.
 ```
   cd <sketchbook>/libraries
   rm -rf ros_lib
   rosrun rosserial_arduino make_libraries.py .
 ```
+Note: make sure that the port for the arduino is correct and to use the old bootloader for the arduino nano. 
 
 **Building:** 
 If you are running this on the Rasberry Pi 3b+ 
@@ -33,5 +43,3 @@ sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
 there is a launch file inside the launch directory, this will bootup the arduino and the joystick and output on the same terminal.
 
 ```roslaunch run_runt_rover.launch```
-
-Note: make sure that the port for the arduino is correct and to use the old bootloader for the arduino nano. 
