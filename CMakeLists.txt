@@ -55,7 +55,7 @@ catkin_python_setup()
  add_message_files(
    FILES
    Coordinates.msg
-   DriveTrain.msg
+   Speed.msg
  )
 
 ## Generate services in the 'srv' folder

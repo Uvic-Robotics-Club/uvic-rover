@@ -56,9 +56,9 @@ void handleSpeed(const runt_rover::Speed speed_direction){
 
 
 
-//Initalize ros node and subscriber to 'data' with handleback as callback function
+//Initalize ros node and subscriber to 'speed' with handleback as callback function
 ros::NodeHandle nh;
-ros::Subscriber<runt_rover::Speed> sub("drive_train",handleSpeed);
+ros::Subscriber<runt_rover::Speed> sub("speed",handleSpeed);
 
 void setup()
 {
@@ -87,4 +87,5 @@ void setup()
 void loop()
 {
     nh.spinOnce();
+    delay(100);
 }

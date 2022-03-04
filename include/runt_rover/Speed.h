@@ -158,7 +158,7 @@ namespace runt_rover
     }
 
     virtual const char * getType() override { return "runt_rover/Speed"; };
-    virtual const char * getMD5() override { return "ea1466db6c7a2a43835d023f30a70dba"; };
+    virtual const char * getMD5() override { return "e411503b1c3b7e55df6f17adf4515654"; };
 
   };
 

@@ -12,13 +12,13 @@ depending on the data required:
 '''
 import rospy
 from runt_rover.comms.commands import CommandType
-from runt_rover.msg import DriveTrain, Coordinates
+from runt_rover.msg import Speed, Coordinates
 from runt_rover.comms.state import TelemetryState
 
 telemetry_state = TelemetryState()
 
 PUBLISHERS_PARAMS = {
-    'drive_train': {'data_class': DriveTrain, 'queue_size': 10}
+    'speed': {'data_class': Speed, 'queue_size': 10}
 }
 
 SUBSCRIBERS_PARAMS = {
@@ -50,13 +50,13 @@ class ROS():
         assert type(command_params['left_direction']) == int
         assert type(command_params['right_direction']) == int
 
-        msg = DriveTrain()
+        msg = Speed()
         msg.leftspeed = command_params['left_speed']
         msg.rightspeed = command_params['right_speed']
         msg.leftdirection = command_params['left_direction']
         msg.rightdirection = command_params['right_direction']
 
-        publishers['drive_train'].publish(msg)
+        publishers['speed'].publish(msg)
 
     @staticmethod
     def subscribe_gps_coordinates(data):
