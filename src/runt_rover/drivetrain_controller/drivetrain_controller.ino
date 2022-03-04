@@ -27,15 +27,27 @@
 #define FORWARD LOW
 #define REVERSE HIGH
 
+// Timeout from last received speed command to reset motors
+#define TIMEOUT_RESET_MOTORS_MILLIS 2000
+
+void handleSpeed(const runt_rover::Speed speed_direction);
+unsigned long last_speed_command_time_millis;
+
+//Initalize ros node and subscriber to 'speed' with handleback as callback function
+ros::NodeHandle nh;
+ros::Subscriber<runt_rover::Speed> sub("speed",handleSpeed);
+
 // callback function needed that checks if any data is incoming 
 void handleSpeed(const runt_rover::Speed speed_direction){
-  
+  // Update time since last command received.
+  last_speed_command_time_millis = millis();
+
   int write_direction_left = speed_direction.leftdirection;
   int write_direction_right = speed_direction.rightdirection;
   int write_speed_left = speed_direction.leftspeed;
   int write_speed_right = speed_direction.rightspeed;
 
-    // Write motor direction
+  // Write motor direction
   digitalWrite(LEFT_BACK_DIR_PIN, write_direction_left);
   digitalWrite(LEFT_MIDDLE_DIR_PIN, write_direction_left);
   digitalWrite(LEFT_FRONT_DIR_PIN, write_direction_left);
@@ -50,15 +62,27 @@ void handleSpeed(const runt_rover::Speed speed_direction){
   analogWrite(RIGHT_BACK_PIN, write_speed_right);
   analogWrite(RIGHT_MIDDLE_PIN, write_speed_right);
   analogWrite(RIGHT_FRONT_PIN, write_speed_right);
-
-    
 }
 
+// function which resets motors to 0, such that rover is not mving.
+void resetSpeed() {
+  
+  // Write motor direction
+  digitalWrite(LEFT_BACK_DIR_PIN, 0);
+  digitalWrite(LEFT_MIDDLE_DIR_PIN, 0);
+  digitalWrite(LEFT_FRONT_DIR_PIN, 0);
+  digitalWrite(RIGHT_BACK_DIR_PIN, 0);
+  digitalWrite(RIGHT_MIDDLE_DIR_PIN, 0);
+  digitalWrite(RIGHT_FRONT_DIR_PIN, 0);
 
-
-//Initalize ros node and subscriber to 'speed' with handleback as callback function
-ros::NodeHandle nh;
-ros::Subscriber<runt_rover::Speed> sub("speed",handleSpeed);
+  // Write motor speed
+  analogWrite(LEFT_BACK_PIN, 0);
+  analogWrite(LEFT_MIDDLE_PIN, 0);
+  analogWrite(LEFT_FRONT_PIN, 0);
+  analogWrite(RIGHT_BACK_PIN, 0);
+  analogWrite(RIGHT_MIDDLE_PIN, 0);
+  analogWrite(RIGHT_FRONT_PIN, 0);  
+}
 
 void setup()
 {
@@ -88,4 +112,9 @@ void loop()
 {
     nh.spinOnce();
     delay(100);
+
+    // If timeout since last speed command, reset motors.
+    if ((millis() - last_speed_command_time_millis) > TIMEOUT_RESET_MOTORS_MILLIS) {
+      resetSpeed();
+    }
 }
