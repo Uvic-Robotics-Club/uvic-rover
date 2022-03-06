@@ -2,6 +2,7 @@
     <param name="base_station_wifi_SSID" type="string" value="network_name"/>
     <param name="base_station_wifi_pwd"  type="string" value="network_pwd"/>
     <param name="base_station_port" type="int" value="5000"/>
+    <param name="base_station_video_port" type="int" value="5050"/>
     <param name="comms_server_port" type="int" value="5001"/>
 
     <!--<node pkg="runt_rover" type="joystick_demo" name="JoyStick" output="screen"/>-->
@@ -11,4 +12,6 @@
         <param name="port" type="string" value="/dev/ttyUSB0"/>
         <param name="baud" type="int" value="9600"/>
     </node>
+
+    <node pkg="runt_rover" type="video" name="video" output="screen"/>
 </launch>

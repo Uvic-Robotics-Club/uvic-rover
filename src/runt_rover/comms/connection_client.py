@@ -1,9 +1,17 @@
+import math
 import requests
+import rospy
+from runt_rover.comms.exceptions import NoConnectionException
 from runt_rover.comms.state import NodeState
+import socket
+import struct
 
 REQUEST_TIMEOUT_SEC = 5.0
+MAX_DGRAM_SIZE_BYTES = 2**16 - 64
 
 node_state = NodeState()
+datagram_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+base_station_video_port = rospy.get_param("/base_station_video_port")
 
 class ConnectionClient():
 
@@ -34,6 +42,7 @@ class ConnectionClient():
         node_state.set_attribute('connection_remote_addr', host_address)
         node_state.set_attribute('connection_port', port)
         node_state.set_attribute('connection_id', json_data['connection_id'])
+
         return True
 
     @staticmethod
@@ -45,7 +54,7 @@ class ConnectionClient():
         assert type(data) == dict
 
         if not node_state.get_attribute('connection_established'):
-            raise Exception('No connection established.')
+            raise NoConnectionException
 
         try:
             request_url = 'http://{}:{}/api/rover/send_telemetry'.format(node_state.get_attribute('connection_remote_addr'), node_state.get_attribute('connection_port'))
@@ -66,7 +75,7 @@ class ConnectionClient():
         '''
 
         if not node_state.get_attribute('connection_established'):
-            raise Exception('No connection established.')
+            raise NoConnectionException
 
         try:
             request_url = 'http://{}:{}/'.format(node_state.get_attribute('connection_remote_addr'), node_state.get_attribute('connection_port'))
@@ -77,7 +86,37 @@ class ConnectionClient():
         except requests.exceptions.ConnectionError as err1:
             raise err1
         except AssertionError as err2:
-            raise err2              
+            raise err2
+
+    @staticmethod
+    def send_camera_frame(data):
+        '''
+        Sends an image represented by a string, data, to the base station by UDP. UDP is used
+        as image quality loss is accepted.
+        '''
+        #assert type(data) == str
+        #print('Length to send: {}'.format(len(data)))
+
+        if not node_state.get_attribute('connection_established'):
+            raise NoConnectionException
+
+        # Determine number of segments to send.
+        size = len(data)
+        num_of_segments = math.ceil(size / MAX_DGRAM_SIZE_BYTES)
+
+        # Send each segment individually, delimited by index start and end.
+        array_index_start = 0
+
+        # curr_segment is a delimiter for the number of segments per image.
+        for curr_segment in range(num_of_segments-1, -1, -1):
+            array_index_end = min(size, array_index_start + MAX_DGRAM_SIZE_BYTES)
+            
+            #print('Segment sent, length: {}, index: {}'.format(array_index_end-array_index_start, curr_segment))
+            datagram_socket.sendto(
+                struct.pack("B", curr_segment) + data[array_index_start: array_index_end],
+                (node_state.get_attribute('connection_remote_addr'), base_station_video_port)
+            )
+            array_index_start = array_index_end
 
     @staticmethod
     def disconnect():
@@ -87,7 +126,7 @@ class ConnectionClient():
         '''
 
         if not node_state.get_attribute('connection_established'):
-            raise Exception('No connection established.')
+            raise NoConnectionException
 
         try:
             request_url = 'http://{}:{}/api/rover/disconnect'.format(node_state.get_attribute('connection_remote_addr'), node_state.get_attribute('connection_port'))

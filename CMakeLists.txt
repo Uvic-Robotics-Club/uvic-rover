@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   rosserial_client
   std_msgs
   message_generation
+  cv_bridge
 )
 
 
@@ -177,6 +178,7 @@ catkin_install_python(PROGRAMS
    nodes/joystick_demo
    nodes/nav
    nodes/comms
+   nodes/video
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

@@ -3,9 +3,9 @@ from flask import Flask, request
 import requests
 import rospy
 from runt_rover.comms.commands import CommandType, CommandParser
-from runt_rover.comms.connection_client import ConnectionClient
 from runt_rover.comms.state import NodeState, TelemetryState
 from runt_rover.comms.ros import ROS
+import threading
 
 node_state = NodeState()
 telemetry_state = TelemetryState()
@@ -48,6 +48,7 @@ def connect():
     node_state.set_attribute('connection_id', new_connection_id)
     node_state.set_attribute('connection_remote_addr', remote_addr)
     node_state.set_attribute('connection_established', True)
+    node_state.set_attribute('connection_port', base_station_port)
 
     response['status'] = 'success'
     response['message'] = 'Established connection with ID {}'.format(new_connection_id)
