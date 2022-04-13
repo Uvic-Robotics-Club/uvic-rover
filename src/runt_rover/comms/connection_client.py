@@ -1,4 +1,5 @@
 import math
+from random import randrange
 import requests
 import rospy
 from runt_rover.comms.exceptions import NoConnectionException
@@ -92,11 +93,12 @@ class ConnectionClient():
     def send_camera_frame(data):
         '''
         Sends an image represented by a string, data, to the base station by UDP. UDP is used
-        as image quality loss is accepted.
-        '''
-        #assert type(data) == str
-        #print('Length to send: {}'.format(len(data)))
+        as image quality loss is accepted. The data is divided into a number of segments which
+        represent the maximum data that can be sent at once through a UDP packet.
 
+        Each segment of each UDP packet is prepended by curr_segment, which identifies the segment
+        for a particular image.
+        '''
         if not node_state.get_attribute('connection_established'):
             raise NoConnectionException
 
@@ -111,9 +113,8 @@ class ConnectionClient():
         for curr_segment in range(num_of_segments-1, -1, -1):
             array_index_end = min(size, array_index_start + MAX_DGRAM_SIZE_BYTES)
             
-            #print('Segment sent, length: {}, index: {}'.format(array_index_end-array_index_start, curr_segment))
             datagram_socket.sendto(
-                struct.pack("B", curr_segment) + data[array_index_start: array_index_end],
+                struct.pack("BQ", curr_segment, frame_id) + data[array_index_start: array_index_end],
                 (node_state.get_attribute('connection_remote_addr'), base_station_video_port)
             )
             array_index_start = array_index_end

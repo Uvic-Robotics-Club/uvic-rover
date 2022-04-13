@@ -26,6 +26,11 @@ class CommandParser():
 
     @staticmethod
     def parse_command(command_type, parameters):
+        '''
+        Returns the parsed command based on the command_type provided and
+        the parameters dict which determine argument values.
+        '''
+
         assert type(command_type) == CommandType
 
         if command_type == CommandType.DRIVE_TRAIN:

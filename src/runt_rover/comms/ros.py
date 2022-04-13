@@ -73,7 +73,7 @@ class ROS():
         try:
             ConnectionClient.send_camera_frame(data)
         except NoConnectionException:
-            # At this point, do not do anything if there is no active connection.
+            # If there is not connection, then ignore.
             pass
 
 PUBLISHERS_PARAMS = {
