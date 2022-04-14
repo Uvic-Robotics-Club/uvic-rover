@@ -49,8 +49,7 @@ class ConnectionClient():
     @staticmethod
     def send_telemetry(data):
         '''
-        Sends telemetry data to the base station, if a connection exists. Current implementation returns all current 
-        telemetry data for each request. May have to send in smaller intervals if data becomes too large.
+        Sends telemetry data to the base station, if a connection exists.
         '''
         assert type(data) == dict
 
@@ -114,7 +113,7 @@ class ConnectionClient():
             array_index_end = min(size, array_index_start + MAX_DGRAM_SIZE_BYTES)
             
             datagram_socket.sendto(
-                struct.pack("BQ", curr_segment, frame_id) + data[array_index_start: array_index_end],
+                struct.pack("B", curr_segment) + data[array_index_start: array_index_end],
                 (node_state.get_attribute('connection_remote_addr'), base_station_video_port)
             )
             array_index_start = array_index_end

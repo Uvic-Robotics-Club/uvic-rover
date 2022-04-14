@@ -4,6 +4,8 @@
     <param name="base_station_port" type="int" value="5000"/>
     <param name="base_station_video_port" type="int" value="5050"/>
     <param name="comms_server_port" type="int" value="5001"/>
+    <param name="comms_healthcheck_timeout_rover_connection_sec" type="double" value="10.0"/>
+    <param name="comms_healthcheck_interval_sec" type="double" value="1.00"/>
 
     <!--<node pkg="runt_rover" type="joystick_demo" name="JoyStick" output="screen"/>-->
     <!--<node pkg="runt_rover" type="nav" name="NAV" output="screen"/>-->

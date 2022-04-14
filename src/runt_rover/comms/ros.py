@@ -12,7 +12,6 @@ depending on the data required:
 '''
 import cv2 as cv
 from cv_bridge import CvBridge
-import numpy as np
 import rospy
 from runt_rover.comms.commands import CommandType
 from runt_rover.comms.connection_client import ConnectionClient
@@ -20,9 +19,8 @@ from runt_rover.comms.exceptions import NoConnectionException
 from runt_rover.msg import Speed, Coordinates
 from runt_rover.comms.state import TelemetryState
 from sensor_msgs.msg import Image
-import random
 
-telemetry_state = TelemetryState()
+#telemetry_state = TelemetryState()
 bridge = CvBridge()
 
 class ROS():
@@ -54,15 +52,23 @@ class ROS():
     def subscribe_gps_coordinates(data):
         assert type(data) == Coordinates
 
-        coords = {
-            'latitude': data.latitude,
-            'longitude': data.longitude,
-            'altitude_msl': data.altitude_msl,
-            'mode': data.mode,
-            'message': data.message
+        telemetry_data = {
+            'GPS': {
+                'latitude': data.latitude,
+                'longitude': data.longitude,
+                'altitude_msl': data.altitude_msl,
+                'mode': data.mode,
+                'message': data.message
+            }
         }
 
-        telemetry_state.set_telemetry_value('gps_coordinates', coords)
+        # telemetry_state.set_telemetry_value('gps_coordinates', telemetry_data)
+
+        try:
+            ConnectionClient.send_telemetry(telemetry_data)
+        except NoConnectionException:
+            # If there is no connection, then ignore.
+            pass
 
     @staticmethod
     def subscribe_camera_image(data):

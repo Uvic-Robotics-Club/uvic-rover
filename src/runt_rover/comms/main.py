@@ -2,7 +2,6 @@ import rospy
 from runt_rover.comms.connection_server import *
 from runt_rover.comms.wifi import WifiManager
 
-
 class CommsHandler():
     def __init__(self):
         rospy.init_node('comms')

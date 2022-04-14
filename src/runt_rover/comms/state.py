@@ -51,36 +51,36 @@ class NodeState(metaclass=Singleton):
         # Release lock
         self.__lock_set_attr.release()
 
-class TelemetryState(metaclass=Singleton):
-    __lock_set_attr = Lock()
-    __data = {}
+#class TelemetryState(metaclass=Singleton):
+#    __lock_set_attr = Lock()
+#    __data = {}
 
-    def __init__(self):
-        self.__data = {
-            'gps_coordinates': None
-        }
+#    def __init__(self):
+#        self.__data = {
+#            'gps_coordinates': None
+#        }
 
-    def set_telemetry_value(self, attribute_name, value):
-        assert type(attribute_name) == str
+#    def set_telemetry_value(self, attribute_name, value):
+#        assert type(attribute_name) == str
 
-        # Acquire lock
-        self.__lock_set_attr.acquire()
-        self.__data[attribute_name] = value
-        # Release lock
-        self.__lock_set_attr.release()
+#        # Acquire lock
+#        self.__lock_set_attr.acquire()
+#        self.__data[attribute_name] = value
+#        # Release lock
+#        self.__lock_set_attr.release()
 
-    def get_attribute(self, attribute_name):
-        assert type(attribute_name) == str
-        return self.__data[attribute_name]
+#    def get_attribute(self, attribute_name):
+#        assert type(attribute_name) == str
+#        return self.__data[attribute_name]
 
-    def get_all_attributes(self):
-        return self.__data
+#    def get_all_attributes(self):
+#        return self.__data
 
-    def delete_attribute(self, attribute_name):
-        assert type(attribute_name) == str
+#    def delete_attribute(self, attribute_name):
+#        assert type(attribute_name) == str
 
-        # Acquire lock
-        self.__lock_set_attr.acquire()
-        del self.__data[attribute_name]
-        # Release lock
-        self.__lock_set_attr.release()
+#        # Acquire lock
+#        self.__lock_set_attr.acquire()
+#        del self.__data[attribute_name]
+#        # Release lock
+#        self.__lock_set_attr.release()

@@ -1,8 +1,8 @@
-from ast import Assert
+import logging
 from flask import Flask, request
-import requests
 import rospy
 from runt_rover.comms.commands import CommandType, CommandParser
+from runt_rover.comms.health import HealthCheck
 from runt_rover.comms.state import NodeState, TelemetryState
 from runt_rover.comms.ros import ROS
 import threading
@@ -37,18 +37,17 @@ def connect():
         response['message'] = str(err)
         return response
 
-    # Fail if connection is already established
-    # TODO: Determine if this is appropriate
-    #if state.get_attribute('connection_established'):
-    #    response['status'] = 'failure'
-    #    response['message'] = 'Connection already exists, cannot start new connection.'
-    #    return response
-
     new_connection_id = int(args['conn_id'])
     node_state.set_attribute('connection_id', new_connection_id)
     node_state.set_attribute('connection_remote_addr', remote_addr)
     node_state.set_attribute('connection_established', True)
     node_state.set_attribute('connection_port', base_station_port)
+
+    rospy.loginfo('Initialized new connection, ID: {}, remote address: {}, base station port: {}'.format(new_connection_id, remote_addr, base_station_port))
+
+    # Start new thread to monitor connection health.
+    thread_health_check = threading.Thread(target=HealthCheck.monitor_connection, args=())
+    thread_health_check.start()
 
     response['status'] = 'success'
     response['message'] = 'Established connection with ID {}'.format(new_connection_id)
@@ -147,6 +146,8 @@ def disconnect():
     node_state.set_attribute('connection_established', False)
     node_state.set_attribute('connection_remote_addr', None)
     node_state.set_attribute('connection_id', None)
+
+    rospy.loginfo('Disconnected connection, ID: {}'.format(node_state.get_attribute('connection_id')))
 
     response['status'] = 'success'
     response['message'] = 'Terminated connection to rover.'
