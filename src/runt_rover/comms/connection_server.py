@@ -3,12 +3,11 @@ from flask import Flask, request
 import rospy
 from runt_rover.comms.commands import CommandType, CommandParser
 from runt_rover.comms.health import HealthCheck
-from runt_rover.comms.state import NodeState, TelemetryState
+from runt_rover.comms.state import NodeState
 from runt_rover.comms.ros import ROS
 import threading
 
 node_state = NodeState()
-telemetry_state = TelemetryState()
 base_station_port = rospy.get_param("/base_station_port")
 
 # Create and configure server
@@ -121,7 +120,8 @@ def get_rover_telemetry():
         response['status'] = 'failure'
         response['message'] = 'Cannot terminate connection from another host.'
 
-    response['data'] = telemetry_state.get_all_attributes()
+    # TODO: Implement perhaps?
+    #response['data'] = telemetry_state.get_all_attributes()
     return response
 
 @app.route('/disconnect', methods=['GET'])

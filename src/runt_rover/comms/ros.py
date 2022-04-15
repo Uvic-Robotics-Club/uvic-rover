@@ -17,7 +17,6 @@ from runt_rover.comms.commands import CommandType
 from runt_rover.comms.connection_client import ConnectionClient
 from runt_rover.comms.exceptions import NoConnectionException
 from runt_rover.msg import Speed, Coordinates
-from runt_rover.comms.state import TelemetryState
 from sensor_msgs.msg import Image
 
 #telemetry_state = TelemetryState()
