@@ -57,6 +57,7 @@ catkin_python_setup()
    FILES
    Coordinates.msg
    Speed.msg
+   Arm.msg
  )
 
 ## Generate services in the 'srv' folder

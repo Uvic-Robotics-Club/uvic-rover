@@ -1,0 +1,4 @@
+bool base_clockwise
+bool base_anticlockwise
+bool gripper_open
+bool gripper_close

@@ -16,7 +16,7 @@ import rospy
 from runt_rover.comms.commands import CommandType
 from runt_rover.comms.connection_client import ConnectionClient
 from runt_rover.comms.exceptions import NoConnectionException
-from runt_rover.msg import Speed, Coordinates
+from runt_rover.msg import Speed, Coordinates, Arm
 from sensor_msgs.msg import Image
 
 #telemetry_state = TelemetryState()
@@ -46,6 +46,21 @@ class ROS():
         msg.rightdirection = command_params['right_direction']
 
         publishers['speed'].publish(msg)
+
+    @staticmethod
+    def publish_arm_msg(command_params):
+        assert type(command_params['base_clockwise']) == bool
+        assert type(command_params['base_anticlockwise']) == bool
+        assert type(command_params['gripper_open']) == bool
+        assert type(command_params['gripper_close']) == bool
+
+        msg = Arm()
+        msg.base_clockwise = command_params['base_clockwise']
+        msg.base_anticlockwise = command_params['base_anticlockwise']
+        msg.gripper_open = command_params['gripper_open']
+        msg.gripper_close = command_params['gripper_close']
+
+        publishers['arm'].publish(msg)
 
     @staticmethod
     def subscribe_gps_coordinates(data):
@@ -82,7 +97,8 @@ class ROS():
             pass
 
 PUBLISHERS_PARAMS = {
-    'speed': {'data_class': Speed, 'queue_size': 10}
+    'speed': {'data_class': Speed, 'queue_size': 10},
+    'arm': {'data_class': Arm, 'queue_size': 10}
 }
 
 '''

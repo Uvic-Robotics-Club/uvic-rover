@@ -6,6 +6,7 @@ class CommandType(Enum):
     base station.
     '''
     DRIVE_TRAIN = 'DRIVE_TRAIN'
+    ARM = 'ARM'
 
 class CommandParser():
     '''
@@ -25,6 +26,16 @@ class CommandParser():
         return parameters
 
     @staticmethod
+    def parse_arm_command(parameters_json):
+        parameters = {
+            'base_clockwise': bool(parameters_json['base_clockwise']),
+            'base_anticlockwise': bool(parameters_json['base_anticlockwise']),
+            'gripper_open': bool(parameters_json['gripper_open']),
+            'gripper_close': bool(parameters_json['gripper_close'])
+        }
+        return parameters
+
+    @staticmethod
     def parse_command(command_type, parameters):
         '''
         Returns the parsed command based on the command_type provided and
@@ -35,3 +46,5 @@ class CommandParser():
 
         if command_type == CommandType.DRIVE_TRAIN:
             return CommandParser.parse_drive_train_command(parameters)
+        elif command_type == CommandType.ARM:
+            return CommandParser.parse_arm_command(parameters)
