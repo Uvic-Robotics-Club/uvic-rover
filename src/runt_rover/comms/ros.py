@@ -10,6 +10,7 @@ depending on the data required:
   2) When comms node would like to send telemetry to the base station, it uses clients to fetch data from
      other nodes about the state of the rover.
 '''
+from pickletools import float8
 import cv2 as cv
 from cv_bridge import CvBridge
 import rospy
@@ -49,16 +50,18 @@ class ROS():
 
     @staticmethod
     def publish_arm_msg(command_params):
-        assert type(command_params['base_clockwise']) == bool
-        assert type(command_params['base_anticlockwise']) == bool
-        assert type(command_params['gripper_open']) == bool
-        assert type(command_params['gripper_close']) == bool
+        assert type(command_params['x_axis_velocity']) == float
+        assert type(command_params['y_axis_velocity']) == float
+        assert type(command_params['z_axis_velocity']) == float
+        assert type(command_params['gripper_velocity']) == float
+        assert type(command_params['gripper_rotation_velocity']) == float
 
         msg = Arm()
-        msg.base_clockwise = command_params['base_clockwise']
-        msg.base_anticlockwise = command_params['base_anticlockwise']
-        msg.gripper_open = command_params['gripper_open']
-        msg.gripper_close = command_params['gripper_close']
+        msg.x_axis_velocity = command_params['x_axis_velocity']
+        msg.y_axis_velocity = command_params['y_axis_velocity']
+        msg.z_axis_velocity = command_params['z_axis_velocity']
+        msg.gripper_velocity = command_params['gripper_velocity']
+        msg.gripper_rotation_velocity = command_params['gripper_rotation_velocity']
 
         publishers['arm'].publish(msg)
 
@@ -76,11 +79,14 @@ class ROS():
             }
         }
 
+        rospy.loginfo('Received GPS data')
+
         # telemetry_state.set_telemetry_value('gps_coordinates', telemetry_data)
 
         try:
             ConnectionClient.send_telemetry(telemetry_data)
         except NoConnectionException:
+            rospy.loginfo('No connection...')
             # If there is no connection, then ignore.
             pass
 
@@ -106,7 +112,7 @@ Comms node subscribes to topics, primarily for the purpose of publishing telemet
 to the base station.
 '''
 SUBSCRIBERS_PARAMS = {
-    'gps_coordinates': {'data_class': Coordinates, 'callback_func': (lambda x: x)},
+    'gps_coordinates': {'data_class': Coordinates, 'callback_func': ROS.subscribe_gps_coordinates},
     'camera_image': {'data_class': Image, 'callback_func': ROS.subscribe_camera_image}
 }
 

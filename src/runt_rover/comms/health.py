@@ -45,14 +45,13 @@ class HealthCheck():
             try:
                 ConnectionClient.ping()
                 rospy.loginfo('Health check (thread ID: {}): Ping success!'.format(thread_id))
+                last_response_timestamp = time()
             except requests.exceptions.ConnectionError as err:
                 rospy.loginfo('Health check (thread ID: {}): Ping failed, unable to reach base station'.format(thread_id))
             except requests.exceptions.Timeout as ex:
                 rospy.loginfo('Health check (thread ID: {}): Ping request timed out'.format(thread_id))
             except AssertionError as err:
-                rospy.loginfo('Health check (thread ID: {}): Response code from ping is not 200 OK'.format(thread_id))
-            
-            last_response_timestamp = time()
+                rospy.loginfo('Health check (thread ID: {}): Response code from ping is not 200 OK'.format(thread_id)) 
 
         # Forcibly disconnect from the rover.
         try:

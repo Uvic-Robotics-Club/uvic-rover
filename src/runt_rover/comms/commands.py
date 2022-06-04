@@ -28,10 +28,11 @@ class CommandParser():
     @staticmethod
     def parse_arm_command(parameters_json):
         parameters = {
-            'base_clockwise': bool(parameters_json['base_clockwise']),
-            'base_anticlockwise': bool(parameters_json['base_anticlockwise']),
-            'gripper_open': bool(parameters_json['gripper_open']),
-            'gripper_close': bool(parameters_json['gripper_close'])
+            'x_axis_velocity': float(parameters_json['x_axis_velocity']),
+            'y_axis_velocity': float(parameters_json['y_axis_velocity']),
+            'z_axis_velocity': float(parameters_json['z_axis_velocity']),
+            'gripper_velocity': float(parameters_json['gripper_velocity']),
+            'gripper_rotation_velocity': float(parameters_json['gripper_rotation_velocity'])
         }
         return parameters
 

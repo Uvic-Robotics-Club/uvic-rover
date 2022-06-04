@@ -57,8 +57,10 @@ class ConnectionClient():
             raise NoConnectionException
 
         try:
-            request_url = 'http://{}:{}/api/rover/send_telemetry'.format(node_state.get_attribute('connection_remote_addr'), node_state.get_attribute('connection_port'))
+            request_url = 'http://{}:{}/connection/send_telemetry'.format(node_state.get_attribute('connection_remote_addr'), node_state.get_attribute('connection_port'))
             response = requests.post(request_url, json=data, timeout=REQUEST_TIMEOUT_SEC)
+            rospy.loginfo('{}'.format(str(response)))
+            rospy.loginfo(response.status_code)
             assert response.status_code == 200
         except requests.exceptions.Timeout as ex:
             raise ex

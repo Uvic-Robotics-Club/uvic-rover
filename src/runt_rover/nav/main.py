@@ -1,10 +1,10 @@
-import dbus
 import gps
 import rospy
 from runt_rover.msg import Coordinates
 from runt_rover.nav.report_handlers import TPVReportHandler, DeviceReportHandler
 from runt_rover.utils.gps_tpv_mode_enum import TPV_MODE
 from runt_rover.utils.shell import Shell
+import time
 
 # Possible TODOs to improve GPS behavior:
 # - Implement class as a state machine where each state corresponds to a state of the module/application
@@ -22,10 +22,11 @@ class GPSHandler:
         self.rate = rospy.Rate(10) # 10Hz
 
         # Stop and disable gpsd.socket service
-        Shell.execute_sudo_command('systemctl stop gpsd.socket')
-        Shell.execute_sudo_command('systemctl disable gpsd.socket')
-        # Shell.execute_sudo_command('killall gpsd')
-        Shell.execute_sudo_command('gpsd /dev/{} -F /var/run/gpsd.sock'.format(GPS_DEVICE_FILE_NAME))
+        #Shell.execute_sudo_command('systemctl stop gpsd.socket')
+        #Shell.execute_sudo_command('systemctl disable gpsd.socket')
+        #Shell.execute_sudo_command('killall gpsd')
+        #time.sleep(5)
+        #Shell.execute_sudo_command('gpsd /dev/{} -F /var/run/gpsd.sock'.format(GPS_DEVICE_FILE_NAME))
 
         # GPS setup
         while True:
@@ -63,6 +64,7 @@ class GPSHandler:
                     continue
 
                 print(str(ros_msg))
+                print('publishing...')
                 self.pub.publish(ros_msg)
 
             except KeyError:
