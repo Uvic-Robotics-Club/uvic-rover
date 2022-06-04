@@ -9,7 +9,7 @@
 import pygame
 from time import time
 import rospy
-from runt_rover.msg import Speed
+from rover.msg import Speed
 
 MAX_VAL = 100
 X_AXIS_DEADZONE = 0.14 * MAX_VAL

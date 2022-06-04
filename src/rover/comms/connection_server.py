@@ -1,10 +1,10 @@
 import logging
 from flask import Flask, request
 import rospy
-from runt_rover.comms.commands import CommandType, CommandParser
-from runt_rover.comms.health import HealthCheck
-from runt_rover.comms.state import NodeState
-from runt_rover.comms.ros import ROS
+from rover.comms.commands import CommandType, CommandParser
+from rover.comms.health import HealthCheck
+from rover.comms.state import NodeState
+from rover.comms.ros import ROS
 import threading
 
 node_state = NodeState()

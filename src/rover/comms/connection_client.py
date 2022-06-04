@@ -2,8 +2,8 @@ import math
 from random import randrange
 import requests
 import rospy
-from runt_rover.comms.exceptions import NoConnectionException
-from runt_rover.comms.state import NodeState
+from rover.comms.exceptions import NoConnectionException
+from rover.comms.state import NodeState
 import socket
 import struct
 
@@ -13,6 +13,7 @@ MAX_DGRAM_SIZE_BYTES = 2**16 - 64
 node_state = NodeState()
 datagram_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 base_station_video_port = rospy.get_param("/base_station_video_port")
+#base_station_video_port = 5050
 
 class ConnectionClient():
 

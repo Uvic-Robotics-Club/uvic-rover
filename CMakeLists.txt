@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(runt_rover)
+project(rover)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -222,4 +222,4 @@ catkin_install_python(PROGRAMS
 # endif()
 
 ## Add folders to be run by python nosetests
-catkin_add_nosetests(test/runt_rover/comms/ros.py)
+catkin_add_nosetests(test/rover/comms/ros.py)

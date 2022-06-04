@@ -1,4 +1,4 @@
-from runt_rover.msg import Coordinates
+from rover.msg import Coordinates
 
 class ReportHandler:
     """

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from runt_rover.nav.main import GPSHandler
+from rover.nav.main import GPSHandler
 
 if __name__ == '__main__':
     gps_handler = GPSHandler()

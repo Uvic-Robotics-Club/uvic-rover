@@ -36,5 +36,5 @@ jobs:
       - name: Build ROS Workspace & Test
         uses: ros-tooling/action-ros-ci@v0.2
         with:
-          package-name: runt_rover
+          package-name: rover
           target-ros1-distro: noetic

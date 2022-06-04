@@ -1,9 +1,9 @@
 import gps
 import rospy
-from runt_rover.msg import Coordinates
-from runt_rover.nav.report_handlers import TPVReportHandler, DeviceReportHandler
-from runt_rover.utils.gps_tpv_mode_enum import TPV_MODE
-from runt_rover.utils.shell import Shell
+from rover.msg import Coordinates
+from rover.nav.report_handlers import TPVReportHandler, DeviceReportHandler
+from rover.utils.gps_tpv_mode_enum import TPV_MODE
+from rover.utils.shell import Shell
 import time
 
 # Possible TODOs to improve GPS behavior:

@@ -7,13 +7,13 @@
     <param name="comms_healthcheck_timeout_rover_connection_sec" type="double" value="10.0"/>
     <param name="comms_healthcheck_interval_sec" type="double" value="1.00"/>
 
-    <!--<node pkg="runt_rover" type="joystick_demo" name="JoyStick" output="screen"/>-->
-    <!--<node pkg="runt_rover" type="nav" name="NAV" output="screen"/>-->
-    <node pkg="runt_rover" type="comms" name="comms" output="screen"/>
+    <!--<node pkg="rover" type="joystick_demo" name="JoyStick" output="screen"/>-->
+    <!--<node pkg="rover" type="nav" name="NAV" output="screen"/>-->
+    <node pkg="rover" type="comms" name="comms" output="screen"/>
     <node name="serial_node" pkg="rosserial_python"  type="serial_node.py" output="screen">
         <param name="port" type="string" value="/dev/ttyUSB0"/>
         <param name="baud" type="int" value="9600"/>
     </node>
 
-    <node pkg="runt_rover" type="video" name="video" output="screen"/>
+    <node pkg="rover" type="video" name="video" output="screen"/>
 </launch>

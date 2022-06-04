@@ -1,5 +1,5 @@
 import rospy
-from runt_rover.video.camera import Camera
+from rover.video.camera import Camera
 from sensor_msgs.msg import Image
 
 class VideoHandler():

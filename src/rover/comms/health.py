@@ -4,9 +4,9 @@ connection to the rover is still alive.
 '''
 import requests
 import rospy
-from runt_rover.comms.connection_client import ConnectionClient
-from runt_rover.comms.exceptions import NoConnectionException
-from runt_rover.comms.state import NodeState
+from rover.comms.connection_client import ConnectionClient
+from rover.comms.exceptions import NoConnectionException
+from rover.comms.state import NodeState
 import threading
 from time import sleep, time
 

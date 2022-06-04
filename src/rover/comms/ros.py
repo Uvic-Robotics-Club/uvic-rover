@@ -10,14 +10,13 @@ depending on the data required:
   2) When comms node would like to send telemetry to the base station, it uses clients to fetch data from
      other nodes about the state of the rover.
 '''
-from pickletools import float8
 import cv2 as cv
 from cv_bridge import CvBridge
 import rospy
-from runt_rover.comms.commands import CommandType
-from runt_rover.comms.connection_client import ConnectionClient
-from runt_rover.comms.exceptions import NoConnectionException
-from runt_rover.msg import Speed, Coordinates, Arm
+from rover.comms.commands import CommandType
+from rover.comms.connection_client import ConnectionClient
+from rover.comms.exceptions import NoConnectionException
+from rover.msg import Speed, Coordinates, Arm
 from sensor_msgs.msg import Image
 
 #telemetry_state = TelemetryState()
