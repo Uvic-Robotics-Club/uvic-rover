@@ -12,8 +12,8 @@ MAX_DGRAM_SIZE_BYTES = 2**16 - 64
 
 node_state = NodeState()
 datagram_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-base_station_video_port = rospy.get_param("/base_station_video_port")
-#base_station_video_port = 5050
+#base_station_video_port = rospy.get_param("/base_station_video_port")
+base_station_video_port = 5050
 
 class ConnectionClient():
 

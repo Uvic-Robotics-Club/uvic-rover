@@ -78,14 +78,12 @@ class ROS():
             }
         }
 
-        rospy.loginfo('Received GPS data')
-
-        # telemetry_state.set_telemetry_value('gps_coordinates', telemetry_data)
+        rospy.loginfo('Received GPS data: {}'.format(telemetry_data))
 
         try:
             ConnectionClient.send_telemetry(telemetry_data)
         except NoConnectionException:
-            rospy.loginfo('No connection...')
+            rospy.loginfo('Unable to send GPS coordinates, no connection.')
             # If there is no connection, then ignore.
             pass
 
@@ -101,24 +99,17 @@ class ROS():
             # If there is not connection, then ignore.
             pass
 
-PUBLISHERS_PARAMS = {
-    'speed': {'data_class': Speed, 'queue_size': 10},
-    'arm': {'data_class': Arm, 'queue_size': 10}
+
+publishers = {
+    'speed': rospy.Publisher(name='speed', data_class=Speed, queue_size=10),
+    'arm': rospy.Publisher(name='arm', data_class=Arm, queue_size=10)
 }
 
 '''
 Comms node subscribes to topics, primarily for the purpose of publishing telemetry 
 to the base station.
 '''
-SUBSCRIBERS_PARAMS = {
-    'gps_coordinates': {'data_class': Coordinates, 'callback_func': ROS.subscribe_gps_coordinates},
-    'camera_image': {'data_class': Image, 'callback_func': ROS.subscribe_camera_image}
+subscribers = {
+    'gps_coordinates': rospy.Subscriber(name='gps_coordinates', data_class=Coordinates, callback=ROS.subscribe_gps_coordinates),
+    'camera_image': rospy.Subscriber(name='camera_image', data_class=Image, callback=ROS.subscribe_camera_image)
 }
-
-publishers = {}
-for pub_name in PUBLISHERS_PARAMS:
-    publishers[pub_name] = rospy.Publisher(name=pub_name, data_class=PUBLISHERS_PARAMS[pub_name]['data_class'], queue_size=PUBLISHERS_PARAMS[pub_name]['queue_size'])
-
-subscribers = {}
-for sub_name in SUBSCRIBERS_PARAMS:
-    subscribers[sub_name] = rospy.Subscriber(name=sub_name, data_class=SUBSCRIBERS_PARAMS[sub_name]['data_class'], callback=SUBSCRIBERS_PARAMS[sub_name]['callback_func'])
