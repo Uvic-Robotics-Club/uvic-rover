@@ -1,5 +1,0 @@
-float32 x_axis_velocity
-float32 y_axis_velocity
-float32 z_axis_velocity
-float32 gripper_velocity
-float32 gripper_rotation_velocity

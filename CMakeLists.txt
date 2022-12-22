@@ -55,9 +55,7 @@ catkin_python_setup()
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   Coordinates.msg
    Speed.msg
-   Arm.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -177,9 +175,6 @@ rosserial_generate_ros_lib(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
    nodes/joystick_demo
-   nodes/nav
-   nodes/comms
-   nodes/video
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -222,4 +217,4 @@ catkin_install_python(PROGRAMS
 # endif()
 
 ## Add folders to be run by python nosetests
-catkin_add_nosetests(test/rover/comms/ros.py)
+# catkin_add_nosetests(test/rover/comms/ros.py)
