@@ -1,5 +1,26 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-sudo_password.txt
+# ROS Ignores
+/build
+/devel
+/src/CMakeLists.txt
+/src/CMakeLists.txt.*
+
+# Python
+*.pyo
+*.pyc
+
+# Misc things
+ros/.catkin_workspace
+
+# Vim Autosaves
+*/*~
+
+# VSCode Files
+.vscode
+**/.vsocde
+.idea/
+.dir-locals.el
+cmake-build-debug
+
+# Emacs/Spacemacs Autosaves
+.#*
+.dir-locals.el

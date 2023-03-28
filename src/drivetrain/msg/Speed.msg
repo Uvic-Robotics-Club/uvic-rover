@@ -1,0 +1,4 @@
+int64 leftspeed
+int64 rightspeed
+int64 leftdirection
+int64 rightdirection

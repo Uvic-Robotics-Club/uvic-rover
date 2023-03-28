@@ -1,8 +1,0 @@
-[Unit]
-Description=Script to start rover ROS application on startup
-
-[Service]
-ExecStart=/usr/bin/ros-startup.sh
-
-[Install]
-WantedBy=multi-user.target
