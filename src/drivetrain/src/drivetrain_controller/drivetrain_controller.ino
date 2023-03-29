@@ -6,7 +6,7 @@
 
 
 #include <ros.h>
-#include "rover/Speed.h"
+#include "drivetrain/Speed.h"
 
 // PWM pins
 #define LEFT_BACK_PIN 3
@@ -30,15 +30,15 @@
 // Timeout from last received speed command to reset motors
 #define TIMEOUT_RESET_MOTORS_MILLIS 2000
 
-void handleSpeed(const rover::Speed speed_direction);
+void handleSpeed(const drivetrain::Speed speed_direction);
 unsigned long last_speed_command_time_millis;
 
 //Initalize ros node and subscriber to 'speed' with handleback as callback function
 ros::NodeHandle nh;
-ros::Subscriber<rover::Speed> sub("speed",handleSpeed);
+ros::Subscriber<drivetrain::Speed> sub("speed",handleSpeed);
 
 // callback function needed that checks if any data is incoming 
-void handleSpeed(const rover::Speed speed_direction){
+void handleSpeed(const drivetrain::Speed speed_direction){
   // Update time since last command received.
   last_speed_command_time_millis = millis();
 
@@ -64,7 +64,7 @@ void handleSpeed(const rover::Speed speed_direction){
   analogWrite(RIGHT_FRONT_PIN, write_speed_right);
 }
 
-// function which resets motors to 0, such that rover is not mving.
+// function which resets motors to 0, such that drivetrain is not mving.
 void resetSpeed() {
   
   // Write motor direction
