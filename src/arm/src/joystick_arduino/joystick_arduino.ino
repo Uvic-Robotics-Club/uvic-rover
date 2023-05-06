@@ -9,10 +9,10 @@ int32_t frequency_shoulder = 10000;
 int32_t frequency_elbow = 10000;
 int shoulder = 3; // pwm pin
 int shoulderDir = 2;
-int elbow = 9; // pwm pin
-int elbowDir = 8;
-int base = 10; // pwm pin
-int baseDir = 12;
+int elbow = 10; // pwm pin
+int elbowDir = 12;
+//int base = 9; // pwm pin
+//int baseDir = 7;
 
 
 void messageCb( const sensor_msgs::Joy& joystick){
@@ -54,16 +54,16 @@ void messageCb( const sensor_msgs::Joy& joystick){
 
  //BASE
  // we found that sending pwm of 5 works the best for the base stepper motor
- pwmWrite(base,0);
- if(joystick.axes[2] > 0 ){
-   digitalWrite(baseDir,0);
-   pwmWrite(base, 5);
- }
-
- if(joystick.axes[2] < 0){
-   digitalWrite(baseDir,1);
-   pwmWrite(base, 5);
- }
+// pwmWrite(base,0);
+// if(joystick.axes[2] > 0 ){
+//   digitalWrite(baseDir,0);
+//   pwmWrite(base, 5);
+// }
+//
+// if(joystick.axes[2] < 0){
+//   digitalWrite(baseDir,1);
+//   pwmWrite(base, 5);
+// }
   
 }
 
@@ -80,8 +80,8 @@ void setup()
   pinMode(elbow,155);
   pinMode(elbowDir, OUTPUT);
 
-  pinMode(base,155);
-  pinMode(baseDir, OUTPUT);
+//  pinMode(base,155);
+//  pinMode(baseDir, OUTPUT);
   
   nh.initNode();
   nh.subscribe(sub);
