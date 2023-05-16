@@ -1,12 +1,9 @@
 # ROS-runt-rover
 ROS implementation of runt rover
 
-This assumes that you have Ubuntu 20.04, ROS Noetic and rosserial installed. 
+This assumes that you have Ubuntu 20.04 and ROS Noetic installed
 
-Clone this repository inside < your catkin workspace > 
-
-The repo is our catkin_ws, so I recommend cloning then renaming this repo as 'src', then running catkin_make
-
+Clone this repository and build using the following commands below
 
 ```
 git clone <url> src 
