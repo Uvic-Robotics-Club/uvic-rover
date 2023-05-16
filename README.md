@@ -56,3 +56,9 @@ If this is the first time doing this, there should be an output and your package
 ## Creating new package
 Simply create a new folder with your package name on the same level as the drivetrain folder. From here you will create a CMakeLists.txt and package.xml file and populate these accordingly, use previous CMakelists as a template but make sure to add in your dependencies.  
 
+## Diagram of 2023 Rover 
+Below is the minimum viable implementation of the rover
+
+![odyssey2023 drawio](https://github.com/Uvic-Robotics-Club/ROS-rover/assets/42494981/f1491431-38e9-40fb-b39e-d3e123ff292f)
+
+
