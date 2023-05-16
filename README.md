@@ -9,10 +9,18 @@ The repo is our catkin_ws, so I recommend cloning then renaming this repo as 'sr
 
 
 ```
-mkdir catkin_ws
-cd catkin_ws
 git clone <url> src 
+cd ROS-rover
 catkin_make
+```
+If this is your first time building it, it will fail because some packages need to be installed and rosserial needs to be setup.
+
+**Downloading packages**
+
+For example you want to run the arm, and you want to install the joy package.
+```
+sudo apt-get install ros-noetic-<package-name>
+sudo apt-get install ros-noetic-joy
 ```
 
 **Setting up Rosserial:**
@@ -27,16 +35,8 @@ This assumes that you have rosserial already installed but not have built our cu
 
 First we need to build our catkin workspace
 
-## Building: 
-If you are running this on the Rasberry Pi 3b+ 
-use this command inside your catkin workspace 
-```
-catkin_make -j 1 -DCMAKE_CXX_FLAGS="--param ggc-min-expand=20"
-```
-otherwise just run 
-```
-catkin_make
-```
+## Creating new package
+Simply create a new folder with your package name on the same level as the drivetrain folder. From here you will create a CMakeLists.txt and package.xml file and populate these accordingly, use previous CMakelists as a template but make sure to add in your dependencies.  
 
 ## Custom message in rosserial
 
@@ -52,9 +52,6 @@ Note: idk why but this is very flaky, I find that you need to type in the full d
 the argument after that blank so that it can build all the custom messages in our workspace
 
 If this is the first time doing this, there should be an output and your package and msg should be listed
-
-## Creating new package
-Simply create a new folder with your package name on the same level as the drivetrain folder. From here you will create a CMakeLists.txt and package.xml file and populate these accordingly, use previous CMakelists as a template but make sure to add in your dependencies.  
 
 ## Diagram of 2023 Rover 
 Below is the minimum viable implementation of the rover
