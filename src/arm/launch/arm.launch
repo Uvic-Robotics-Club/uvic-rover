@@ -5,14 +5,14 @@
         pkg="rosserial_python"
         type="serial_node.py"
         name="ArduinoOne"
-        args="/dev/ttyACM0"
+        args="/dev/ttyUSB0"
     ></node>
 
-    <node
+    <!-- <node
         pkg="rosserial_python"
         type="serial_node.py"
         name="ArduinoTwo"
         args="/dev/ttyACM1"
-    ></node>
+    ></node> -->
 
 </launch>
