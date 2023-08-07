@@ -36,82 +36,31 @@ void messageCb( const sensor_msgs::Joy& joystick){
 
   // X and Y axis is range [-100.0, 100.0] where negative is reverse
 
-  int x_axis = joystick.axes[3] * 100;
-  int y_axis = joystick.axes[4] * 100;
-  int z_button = joystick.buttons[5];
+  int right = joystick.axes[5] * 100;
+  int left = joystick.axes[2] * 100;
+  int reverse = joystick.buttons[5];
 
-  int speedLeft;
-  int speedRight;
-
-  speedLeft = y_axis;
-  speedRight = y_axis;
-
-  if (abs(x_axis) < DEADZONE && abs(y_axis) < DEADZONE){
-
-    if(z_button == 1 ){
-      speedLeft += 3;
-      speedRight -= 3;
-    }
-  }else{
-    if(x_axis != 0){
-      speedLeft += x_axis;
-      speedRight -= x_axis;
-    }
+  if(reverse == 1){
+    resetSpeed();
+    return;
   }
 
 
-  if(speedLeft < 0){
-    speedLeft += 1;
-  }else if(speedLeft > 0){
-    speedLeft -= 1;
-  }
+  int write_speed_left = map(left,100,-100,0,255);
+  int write_speed_right = map(right,100,-100,0,255);
 
-  if(speedRight < 0){
-    speedRight += 1;
-  }else if(speedRight > 0){
-    speedRight -= 1;
-  }
+  int linear_v = (write_speed_left + write_speed_right) / 2.0;
+  int angular_v = (write_speed_right - write_speed_left) / 2.0;
 
+  int left_wheel = linear_v + angular_v;
+  int right_wheel = linear_v - angular_v;
+  
 
+  digitalWrite(LEFT_DIR,0);
+  digitalWrite(RIGHT_DIR,1);
 
-  int write_direction_left = 0;
-  int write_direction_right = 0;
-  int write_speed_right = 0;
-  int write_speed_left = 0;
-
-
-  if(speedLeft > 0){
-    write_direction_left = 0;
-  }else{
-    write_direction_left = 1;
-  }
-
-  if(speedRight > 0){
-    write_direction_right = 0;
-  }else{
-    write_direction_right = 1;
-  }
-
-  write_speed_left = map(abs(speedLeft),0,100,0,255);
-  write_speed_right = map(abs(speedRight),0,100,0,255);
-
-//  digitalWrite(LEFT_BACK_DIR_PIN,write_direction_left);
-//  digitalWrite(LEFT_FRONT_DIR_PIN,write_direction_left);
-//  digitalWrite(RIGHT_BACK_DIR_PIN,write_direction_right);
-//  digitalWrite(RIGHT_FRONT_DIR_PIN,write_direction_right);
-//
-//
-//  analogWrite(LEFT_BACK_PIN,write_speed_left);
-//  analogWrite(LEFT_FRONT_PIN,write_speed_left);
-//  analogWrite(RIGHT_BACK_PIN,write_speed_right);
-//  analogWrite(RIGHT_FRONT_PIN,write_speed_right);
-
-
-  digitalWrite(LEFT_DIR,write_direction_left);
-  digitalWrite(RIGHT_DIR,write_direction_right);
-
-  analogWrite(LEFT_PWM,write_speed_left);
-  analogWrite(RIGHT_PWM,write_speed_right);
+  analogWrite(LEFT_PWM,left_wheel);
+  analogWrite(RIGHT_PWM,right_wheel);
   
 
 }
