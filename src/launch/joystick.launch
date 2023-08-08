@@ -1,0 +1,15 @@
+<launch>
+<group>
+    <remap from='joy' to='j1'/>
+    <node pkg='joy' name='ps4' type='joy_node'>
+        <param name='dev' type='string' value='/dev/input/js0'/>
+    </node>
+</group>
+
+<group>
+    <remap from='joy' to='j2'/>
+    <node pkg='joy' name='logitech' type='joy_node'>
+        <param name='dev' type='string' value='/dev/input/js2'/>
+    </node>
+</group>
+</launch>

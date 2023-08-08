@@ -168,7 +168,7 @@ void messageCb( const sensor_msgs::Joy& joystick){
 }
 
 
-ros::Subscriber<sensor_msgs::Joy> sub("joy", &messageCb );
+ros::Subscriber<sensor_msgs::Joy> sub("j2", &messageCb );
 
 void setup() {
   // put your setup code here, to run once:

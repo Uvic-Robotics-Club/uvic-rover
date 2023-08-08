@@ -43,8 +43,8 @@ void messageCb( const sensor_msgs::Joy& joystick){
 
   // X and Y axis is range [-100.0, 100.0] where negative is reverse
 
-  float right = joystick.axes[5] * 100;
-  float left = joystick.axes[2] * 100;
+  float right = joystick.axes[4] * 100;
+  float left = joystick.axes[1] * 100;
   int reverse = joystick.buttons[5];
   int stop_move = joystick.buttons[4];
   
@@ -55,8 +55,8 @@ void messageCb( const sensor_msgs::Joy& joystick){
   }
 
 
-  float write_speed_left = map(left,100,-100,0,255);
-  float write_speed_right = map(right,100,-100,0,255);
+  float write_speed_left = map(left,0,100,0,255);
+  float write_speed_right = map(right,0,100,0,255);
 
   float linear_v = (write_speed_left + write_speed_right) / 2.0;
   float angular_v = (write_speed_right - write_speed_left) / 2.0;
@@ -65,14 +65,14 @@ void messageCb( const sensor_msgs::Joy& joystick){
   float right_wheel = linear_v - angular_v;
   
 
-  digitalWrite(LEFT_BACK_DIR,reverse);
-  digitalWrite(RIGHT_BACK_DIR,reverse);
+  digitalWrite(LEFT_BACK_DIR, not reverse);
+  digitalWrite(RIGHT_BACK_DIR, not reverse);
 
   analogWrite(LEFT_BACK_PWM,write_speed_left);
   analogWrite(RIGHT_BACK_PWM,write_speed_right);
 
-  digitalWrite(LEFT_FRONT_DIR,reverse);
-  digitalWrite(RIGHT_FRONT_DIR,reverse);
+  digitalWrite(LEFT_FRONT_DIR,not reverse);
+  digitalWrite(RIGHT_FRONT_DIR,not reverse);
 
   analogWrite(LEFT_FRONT_PWM,write_speed_left);
   analogWrite(RIGHT_FRONT_PWM,write_speed_right);
@@ -80,7 +80,7 @@ void messageCb( const sensor_msgs::Joy& joystick){
 
 }
 
-ros::Subscriber<sensor_msgs::Joy> sub("joy", &messageCb );
+ros::Subscriber<sensor_msgs::Joy> sub("j1", &messageCb );
 
 // function which resets motors to 0, such that drivetrain is not mving.
 void resetSpeed() {

@@ -1,0 +1,18 @@
+<launch>
+<!-- Launch 2 Arduino boards ARM AND DRIVETRAIN -->
+
+    <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="ArduinoArm"
+        args="/dev/ttyUSB0"
+    ></node>
+
+    <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="ArduinoDrive"
+        args="/dev/ttyACM1"
+    ></node>
+
+</launch>
