@@ -15,10 +15,17 @@
 //#define RIGHT_BACK_DIR_PIN 8
 //#define RIGHT_FRONT_DIR_PIN 13
 
-#define LEFT_PWM 5
-#define LEFT_DIR 4
-#define RIGHT_PWM 3
-#define RIGHT_DIR 2
+#define LEFT_FRONT_PWM 4
+#define LEFT_FRONT_DIR 33
+
+#define RIGHT_FRONT_PWM 5
+#define RIGHT_FRONT_DIR 32
+
+
+#define LEFT_BACK_PWM 2
+#define LEFT_BACK_DIR 35
+#define RIGHT_BACK_PWM 3
+#define RIGHT_BACK_DIR 34
 
 
 #define FORWARD LOW
@@ -36,31 +43,39 @@ void messageCb( const sensor_msgs::Joy& joystick){
 
   // X and Y axis is range [-100.0, 100.0] where negative is reverse
 
-  int right = joystick.axes[5] * 100;
-  int left = joystick.axes[2] * 100;
+  float right = joystick.axes[5] * 100;
+  float left = joystick.axes[2] * 100;
   int reverse = joystick.buttons[5];
-
-  if(reverse == 1){
+  int stop_move = joystick.buttons[4];
+  
+  
+  if(stop_move == 1){
     resetSpeed();
     return;
   }
 
 
-  int write_speed_left = map(left,100,-100,0,255);
-  int write_speed_right = map(right,100,-100,0,255);
+  float write_speed_left = map(left,100,-100,0,255);
+  float write_speed_right = map(right,100,-100,0,255);
 
-  int linear_v = (write_speed_left + write_speed_right) / 2.0;
-  int angular_v = (write_speed_right - write_speed_left) / 2.0;
+  float linear_v = (write_speed_left + write_speed_right) / 2.0;
+  float angular_v = (write_speed_right - write_speed_left) / 2.0;
 
-  int left_wheel = linear_v + angular_v;
-  int right_wheel = linear_v - angular_v;
+  float left_wheel = linear_v + angular_v;
+  float right_wheel = linear_v - angular_v;
   
 
-  digitalWrite(LEFT_DIR,0);
-  digitalWrite(RIGHT_DIR,1);
+  digitalWrite(LEFT_BACK_DIR,reverse);
+  digitalWrite(RIGHT_BACK_DIR,reverse);
 
-  analogWrite(LEFT_PWM,left_wheel);
-  analogWrite(RIGHT_PWM,right_wheel);
+  analogWrite(LEFT_BACK_PWM,write_speed_left);
+  analogWrite(RIGHT_BACK_PWM,write_speed_right);
+
+  digitalWrite(LEFT_FRONT_DIR,reverse);
+  digitalWrite(RIGHT_FRONT_DIR,reverse);
+
+  analogWrite(LEFT_FRONT_PWM,write_speed_left);
+  analogWrite(RIGHT_FRONT_PWM,write_speed_right);
   
 
 }
@@ -82,11 +97,12 @@ void resetSpeed() {
 //  analogWrite(RIGHT_BACK_PIN, 0);
 //  analogWrite(RIGHT_FRONT_PIN, 0);  
 
-  digitalWrite(LEFT_DIR,0);
-  digitalWrite(RIGHT_DIR,0);
 
-  analogWrite(LEFT_PWM,0);
-  analogWrite(RIGHT_PWM,0);
+  analogWrite(LEFT_BACK_PWM,0);
+  analogWrite(RIGHT_BACK_PWM,0);
+
+  analogWrite(LEFT_FRONT_PWM,0);
+  analogWrite(RIGHT_FRONT_PWM,0);
 }
 
 
@@ -103,11 +119,19 @@ void setup() {
 //  pinMode(LEFT_FRONT_DIR_PIN, OUTPUT);
 //  pinMode(RIGHT_BACK_DIR_PIN, OUTPUT);
 //  pinMode(RIGHT_FRONT_DIR_PIN, OUTPUT);
-  pinMode(LEFT_DIR,OUTPUT);
-  pinMode(RIGHT_DIR,OUTPUT);
+  pinMode(LEFT_BACK_DIR,OUTPUT);
+  pinMode(RIGHT_BACK_DIR,OUTPUT);
 
-  pinMode(LEFT_PWM,OUTPUT);
-  pinMode(RIGHT_PWM,OUTPUT);
+  pinMode(LEFT_BACK_PWM,OUTPUT);
+  pinMode(RIGHT_BACK_PWM,OUTPUT);
+
+  pinMode(LEFT_FRONT_DIR,OUTPUT);
+  pinMode(RIGHT_FRONT_DIR,OUTPUT);
+
+  pinMode(LEFT_FRONT_PWM,OUTPUT);
+  pinMode(RIGHT_FRONT_PWM,OUTPUT);
+
+
   nh.initNode();
   nh.subscribe(sub);
 }
