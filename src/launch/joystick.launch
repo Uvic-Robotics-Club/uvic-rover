@@ -2,7 +2,7 @@
 <group>
     <remap from='joy' to='j1'/>
     <node pkg='joy' name='ps4' type='joy_node'>
-        <param name='dev' type='string' value='/dev/input/js0'/>
+        <param name='dev' type='string' value='/dev/input/js1'/>
     </node>
 </group>
 
@@ -12,4 +12,8 @@
         <param name='dev' type='string' value='/dev/input/js2'/>
     </node>
 </group>
+
+<node name="j1" type="throttle" pkg="topic_tools" args="messages /j1 15 /j1_throttle" />
+<node name="j2" type="throttle" pkg="topic_tools" args="messages /j2 7 /j2_throttle" />
+
 </launch>

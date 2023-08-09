@@ -154,3 +154,6 @@ class joystick_demo:
 
 def main():
     joystick_demo().control_runt_rover()
+
+if __name__ == "__main__":
+    main()

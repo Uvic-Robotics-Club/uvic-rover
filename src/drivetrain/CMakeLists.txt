@@ -174,7 +174,8 @@ rosserial_generate_ros_lib(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-   src/joystick_demo
+   src/joystick_demo.py
+   src/control_speed.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

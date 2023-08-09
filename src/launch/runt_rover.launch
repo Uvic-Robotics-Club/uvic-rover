@@ -1,0 +1,13 @@
+<launch>
+<!-- Launch 2 Arduino boards ARM AND DRIVETRAIN -->
+
+    <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="runt_rover"
+        args="/dev/ttyUSB1"
+        baud="9600"
+    ></node>
+
+
+</launch>

@@ -11,9 +11,9 @@ int32_t frequency_wristy = 10;
 //pin definitions
 int const basePwm = 10; 
 int const baseDir = 51;
-
+//
 int const shoulderPwm = 11;
-int const shoulderDir = 3;
+int const shoulderDir = 3; 
 
 int const elbowPwm = 12;
 int const elbowDir = 2;
@@ -54,15 +54,15 @@ void messageCb( const sensor_msgs::Joy& joystick){
     digitalWrite(LED_BUILTIN, LOW);
 
 // BASE
-//  we found that sending pwm of 5 works the best for the base stepper motor
+  //we found that sending pwm of 5 works the best for the base stepper motor
  analogWrite(basePwm,0);
 
- if(joystick.axes[0] > 0.5 ){
+ if(joystick.buttons[11] == 1 ){
    digitalWrite(baseDir,1);
    analogWrite(basePwm, 5);
  }
 
- if(joystick.axes[0] < -0.5){
+ if(joystick.buttons[10] == 1){
    digitalWrite(baseDir,0);
    analogWrite(basePwm, 5);
  }
@@ -80,7 +80,7 @@ void messageCb( const sensor_msgs::Joy& joystick){
     pwmWrite(shoulderPwm, 155);
  }
 
-  // ELBOW
+//  // ELBOW
     pwmWrite(elbowPwm,0);
 
  if(joystick.axes[5] > 0.5 ){
@@ -93,7 +93,7 @@ void messageCb( const sensor_msgs::Joy& joystick){
  }
 
 //
-  // WRIST Y
+//  // WRIST Y
  analogWrite(wristPwmy,0);
  if(joystick.buttons[2] == 1 ){
    digitalWrite(wristDiry,0);
@@ -107,7 +107,7 @@ void messageCb( const sensor_msgs::Joy& joystick){
  }
 
 
-  // WRIST X
+//  // WRIST X
    analogWrite(wristPwmx,0);
  if(joystick.buttons[5] == 1 ){
    digitalWrite(wristDirx,1);
@@ -122,11 +122,11 @@ void messageCb( const sensor_msgs::Joy& joystick){
 
 
  }
- 
+// 
 
 //GRIPPER
   //squeeze 
-
+//
  analogWrite(gripperPwm,0);
  digitalWrite(gripperDir1,LOW);
  digitalWrite(gripperDir2,LOW);
@@ -141,6 +141,11 @@ void messageCb( const sensor_msgs::Joy& joystick){
   digitalWrite(gripperDir1,LOW);
   digitalWrite(gripperDir2,HIGH);
  }
+
+
+
+
+// idk
 //   analogWrite(gripperPwm,0);
 // digitalWrite(gripperDir1,LOW);
 // digitalWrite(gripperDir2,LOW);
