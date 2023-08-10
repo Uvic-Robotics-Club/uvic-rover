@@ -11,15 +11,14 @@ import rospy
 from drivetrain.msg import Speed
 from sensor_msgs.msg import Joy
 MAX_VAL = 100
-X_AXIS_DEADZONE = 0.14 * MAX_VAL
-Y_AXIS_DEADZONE = 0.14 * MAX_VAL
-Z_AXIS_DEADZONE = 0.20 * MAX_VAL # Rotation around z axis
+X_AXIS_DEADZONE = 0.25 * MAX_VAL
+Y_AXIS_DEADZONE = 0.25* MAX_VAL
 SLIDER_OFFSET = 1 * MAX_VAL # Slider in front of joystick
 
 
 pub = rospy.Publisher('speed', Speed, queue_size=10)
 
-
+# max_PWM = 255
 
 
 
@@ -42,7 +41,7 @@ def control_runt_rover(sub):
     #     print("Cannot find joystick. Not running joystick.")
     #     return
 
-
+    
     y_axis = -sub.axes[4] * MAX_VAL
     x_axis = sub.axes[3] * MAX_VAL
     # Retrieve joystick data
@@ -56,13 +55,6 @@ def control_runt_rover(sub):
 
     z_axis = sub.buttons[3]
     stop_button = sub.buttons[4]
-    # print(x_axis, y_axis, z_axis)
-
-    
-    # Limiter is in range [0, 10.0] where 0 is when slider is all the way
-    # back towards negative sign
-    # limiter = (0 - joystick.get_axis(2)) * MAX_VAL
-    # limiter = (limiter + SLIDER_OFFSET) / 2 # Maps from [-100.0, 100.0] to [0, 100.0]
 
     # Set initial speed before considering turning
     speedLeft = speedRight = y_axis
@@ -71,8 +63,8 @@ def control_runt_rover(sub):
         # Joystick is centred
         if abs(z_axis) == 1:
             # Rotate rover in place
-            speedLeft += 20
-            speedRight -= 20
+            speedLeft += 70
+            speedRight -= 70
     else:
         # Joystick is not centred
         if x_axis != 0:
@@ -125,14 +117,20 @@ def control_runt_rover(sub):
     write_speed_right = remap(abs(speed_right),0,100,0,255)
 
 
+    if(stop_button==1 or (abs(x_axis) < X_AXIS_DEADZONE and abs(y_axis) < Y_AXIS_DEADZONE)):
+        msg = writeValues(SR=0,SL=0,DR=0,DL=0)
+    else:
+        multiplier = 1.25
+        if(int(sub.axes[7]) == 1):
+            multiplier = 1
+        if(int(sub.axes[7]) == -1):
+            multiplier = 2
+        if(int(sub.axes[6]) == 1):
+            multiplier = 1.25
 
-    msg = Speed()
-    msg.rightspeed = int(write_speed_right)
-    msg.leftspeed = int(write_speed_left)
-    msg.rightdirection = write_direction_right
-    msg.leftdirection = write_direction_left
+        msg = writeValues(SR=write_speed_right,SL=write_speed_left,DR=write_direction_right,DL=write_direction_left,multiplier=multiplier)
 
-    rospy.loginfo(msg)
+    rospy.loginfo(y_axis)
     pub.publish(msg)
     # rospy.loginfo(msg)
     # pub.publish(msg)
@@ -148,6 +146,15 @@ def remap(OldValue,OldMin,OldMax,NewMin,NewMax):
         NewRange = NewMax - NewMin
         NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
     return NewValue
+
+def writeValues(SR,SL,DR,DL,multiplier=1):
+    msg = Speed()
+    msg.rightspeed = int(SR/multiplier)
+    msg.leftspeed = int(SL/multiplier)
+    msg.rightdirection = DR
+    msg.leftdirection = DL
+    return msg
+
 
 def main():
     rospy.init_node('joystick_demo')

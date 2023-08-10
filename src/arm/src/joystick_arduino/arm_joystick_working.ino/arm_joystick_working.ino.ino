@@ -33,14 +33,6 @@ int gripperFlag = 0;
 
 void messageCb( const sensor_msgs::Joy& joystick){
 
-//  frequency_shoulder = abs(map(joystick.axes[1]*10, -10, 10, -130, 130));
-//  frequency_elbow = abs(map(joystick.axes[5]*10, -10, 10, -100, 100));
-
-//  SetPinFrequencySafe(shoulderPwm, frequency_shoulder);
-//  SetPinFrequencySafe(elbowPwm, frequency_elbow);
-//  SetPinFrequencySafe(wristPwmy, 490);
-  //SetPinFrequencySafe(wristPwmx, 490);
-
   SetPinFrequencySafe(shoulderPwm, 120);
   SetPinFrequencySafe(elbowPwm, 120);
 
@@ -51,7 +43,6 @@ void messageCb( const sensor_msgs::Joy& joystick){
     digitalWrite(LED_BUILTIN, LOW);
   }
 
-    digitalWrite(LED_BUILTIN, LOW);
 
 // BASE
   //we found that sending pwm of 5 works the best for the base stepper motor
