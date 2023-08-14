@@ -130,7 +130,7 @@ def control_runt_rover(sub):
 
         msg = writeValues(SR=write_speed_right,SL=write_speed_left,DR=write_direction_right,DL=write_direction_left,multiplier=multiplier)
 
-    rospy.loginfo(y_axis)
+    # rospy.loginfo(y_axis)
     pub.publish(msg)
     # rospy.loginfo(msg)
     # pub.publish(msg)

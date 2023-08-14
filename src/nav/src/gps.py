@@ -19,7 +19,7 @@ from sensor_msgs.msg import NavSatFix
 # for a computer, use the pyserial library for uart access
 import serial
 def main():
-    uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=10)
+    uart = serial.Serial("/dev/ttyUSB1", baudrate=9600, timeout=10)
 
     # Initialize GPS Ros node 
     pub = rospy.Publisher('GPS', NavSatFix, queue_size=10)
@@ -72,7 +72,6 @@ def main():
                 print("Waiting for fix...")
                 continue
             # We have a fix! (gps.has_fix is true)
-
             # Put gps data into navstat
             msg.latitude = gps.latitude
             msg.longitude = gps.longitude

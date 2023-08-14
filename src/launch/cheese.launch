@@ -1,0 +1,31 @@
+<launch>
+    <node pkg="tf" type="static_transform_publisher" name="swri_transform" args="0 0 0 0 0 0 /map /check 100"  />
+    <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin" >
+        <param name="local_xy_frame" value="/map"/>
+        <param name="local_xy_origin" value="swri"/>
+        <rosparam param="local_xy_origins">
+            [{ name: swri,
+             latitude: 51.4705040, <!-- change this -->
+             longitude: -112.75619345, <!-- change this -->
+             altitude: 1444.1,
+             heading: 0.0}]
+        </rosparam>
+    </node>
+    <node pkg="mapviz" type="mapviz" name="mapviz"/>
+    <!-- <node pkg="nav" type="gps.py" name="generate_gps" /> -->
+<group>
+    <remap from='joy' to='j2'/>
+    <node pkg='joy' name='logitech' type='joy_node'>
+        <param name='dev' type='string' value='/dev/input/js1'/>
+    </node>
+</group>
+<group>
+    <remap from='joy' to='j1'/>
+    <node pkg='joy' name='ps4' type='joy_node'>
+        <param name='dev' type='string' value='/dev/input/js0'/>
+    </node>
+</group>
+
+    <node pkg='drivetrain' name='V2joydrive' type='control_speed.py'/>
+
+</launch>

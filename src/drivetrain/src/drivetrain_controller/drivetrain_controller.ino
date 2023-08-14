@@ -9,20 +9,16 @@
 #include "drivetrain/Speed.h"
 //
 //// PWM pins
-#define LEFT_BACK_PIN 3
-//#define LEFT_MIDDLE_PIN 5
-//#define LEFT_FRONT_PIN 6
+#define LEFT_BACK_PIN 4
+#define LEFT_FRONT_PIN 2
 #define RIGHT_BACK_PIN 5
-//#define RIGHT_MIDDLE_PIN 10
-//#define RIGHT_FRONT_PIN 11
+#define RIGHT_FRONT_PIN 3
 //
 //// Direction pins
-#define LEFT_BACK_DIR_PIN 2
-//#define LEFT_MIDDLE_DIR_PIN 4
-//#define LEFT_FRONT_DIR_PIN 7
-#define RIGHT_BACK_DIR_PIN 4
-//#define RIGHT_MIDDLE_DIR_PIN 12
-//#define RIGHT_FRONT_DIR_PIN 13
+#define LEFT_BACK_DIR_PIN 35
+#define LEFT_FRONT_DIR_PIN 33
+#define RIGHT_BACK_DIR_PIN 32
+#define RIGHT_FRONT_DIR_PIN 34
 
 #define FORWARD LOW
 #define REVERSE HIGH
@@ -35,13 +31,13 @@ unsigned long last_speed_command_time_millis;
 
 //Initalize ros node and subscriber to 'speed' with handleback as callback function
 ros::NodeHandle nh;
-ros::Subscriber<drivetrain::Speed> sub("j1_throttle",handleSpeed);
+ros::Subscriber<drivetrain::Speed> sub("speed",handleSpeed);
 
 // callback function needed that checks if any data is incoming 
 void handleSpeed(const drivetrain::Speed speed_direction){
   // Update time since last command received.
   last_speed_command_time_millis = millis();
-
+  nh.loginfo("infooooo");
   int write_direction_left = speed_direction.leftdirection;
   int write_direction_right = speed_direction.rightdirection;
   int write_speed_left = speed_direction.leftspeed;
@@ -49,19 +45,17 @@ void handleSpeed(const drivetrain::Speed speed_direction){
 
   // Write motor direction
   digitalWrite(LEFT_BACK_DIR_PIN, write_direction_left);
-//  digitalWrite(LEFT_MIDDLE_DIR_PIN, write_direction_left);
-//  digitalWrite(LEFT_FRONT_DIR_PIN, write_direction_left);
+  digitalWrite(LEFT_FRONT_DIR_PIN, write_direction_left);
   digitalWrite(RIGHT_BACK_DIR_PIN, write_direction_right);
-//  digitalWrite(RIGHT_MIDDLE_DIR_PIN, write_direction_right);
-//  digitalWrite(RIGHT_FRONT_DIR_PIN, write_direction_right);
+  digitalWrite(RIGHT_FRONT_DIR_PIN, write_direction_right);
 
   // Write motor speed
   analogWrite(LEFT_BACK_PIN, write_speed_left);
 //  analogWrite(LEFT_MIDDLE_PIN, write_speed_left);
-//  analogWrite(LEFT_FRONT_PIN, write_speed_left);
+  analogWrite(LEFT_FRONT_PIN, write_speed_left);
   analogWrite(RIGHT_BACK_PIN, write_speed_right);
 //  analogWrite(RIGHT_MIDDLE_PIN, write_speed_right);
-//  analogWrite(RIGHT_FRONT_PIN, write_speed_right);
+  analogWrite(RIGHT_FRONT_PIN, write_speed_right);
 }
 
 // function which resets motors to 0, such that drivetrain is not mving.
@@ -70,38 +64,38 @@ void resetSpeed() {
   // Write motor direction
   digitalWrite(LEFT_BACK_DIR_PIN, 0);
 //  digitalWrite(LEFT_MIDDLE_DIR_PIN, 0);
-//  digitalWrite(LEFT_FRONT_DIR_PIN, 0);
+  digitalWrite(LEFT_FRONT_DIR_PIN, 0);
   digitalWrite(RIGHT_BACK_DIR_PIN, 0);
 //  digitalWrite(RIGHT_MIDDLE_DIR_PIN, 0);
-//  digitalWrite(RIGHT_FRONT_DIR_PIN, 0);
+  digitalWrite(RIGHT_FRONT_DIR_PIN, 0);
 
   // Write motor speed
   analogWrite(LEFT_BACK_PIN, 0);
 //  analogWrite(LEFT_MIDDLE_PIN, 0);
-//  analogWrite(LEFT_FRONT_PIN, 0);
+  analogWrite(LEFT_FRONT_PIN, 0);
   analogWrite(RIGHT_BACK_PIN, 0);
 //  analogWrite(RIGHT_MIDDLE_PIN, 0);
-//  analogWrite(RIGHT_FRONT_PIN, 0);  
+  analogWrite(RIGHT_FRONT_PIN, 0);  
 }
 
 void setup()
 {
   // This command sets the baud rate to 9600 and is only necessary for the arduino nano 
-  nh.getHardware()->setBaud(9600); 
+//  nh.getHardware()->setBaud(9600); 
   pinMode(LEFT_BACK_PIN, OUTPUT);
 //  pinMode(LEFT_MIDDLE_PIN, OUTPUT);
-//  pinMode(LEFT_FRONT_PIN, OUTPUT);
+  pinMode(LEFT_FRONT_PIN, OUTPUT);
   pinMode(RIGHT_BACK_PIN, OUTPUT);
 //  pinMode(RIGHT_MIDDLE_PIN, OUTPUT);
-//  pinMode(RIGHT_FRONT_PIN, OUTPUT);
+  pinMode(RIGHT_FRONT_PIN, OUTPUT);
 
   // Configure direction pins
   pinMode(LEFT_BACK_DIR_PIN, OUTPUT);
 //  pinMode(LEFT_MIDDLE_DIR_PIN, OUTPUT);
-//  pinMode(LEFT_FRONT_DIR_PIN, OUTPUT);
+  pinMode(LEFT_FRONT_DIR_PIN, OUTPUT);
   pinMode(RIGHT_BACK_DIR_PIN, OUTPUT);
 //  pinMode(RIGHT_MIDDLE_DIR_PIN, OUTPUT);
-//  pinMode(RIGHT_FRONT_DIR_PIN, OUTPUT);
+  pinMode(RIGHT_FRONT_DIR_PIN, OUTPUT);
 
   nh.initNode();
   nh.subscribe(sub);

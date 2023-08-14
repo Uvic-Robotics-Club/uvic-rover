@@ -6,12 +6,14 @@
         type="serial_node.py"
         name="ArduinoArm"
         args="/dev/ttyUSB0"
-    ></node>
-
+    >
+    <!-- <param name="baud" type="int" value="9600"/> -->
+    </node>
+<!-- 
     <node
         pkg="rosserial_python"
         type="serial_node.py"
         name="ArduinoArm"
         args="/dev/ttyACM0"
-    ></node>
+    ></node> -->
 </launch>

@@ -99,5 +99,5 @@ void loop() {
   setMotorSpeedAndDirection(motorRearRightSpeedPin, motorRearRightDirPin, abs(motorSpeedRearRight), motorDirRearRight);
 
   nh.spinOnce();
-  delay(10);
+  delay(100);
 }
