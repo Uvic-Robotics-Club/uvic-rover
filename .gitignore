@@ -1,8 +1,11 @@
 # ROS Ignores
-/build
-/devel
-/src/CMakeLists.txt
-/src/CMakeLists.txt.*
+build/
+devel/
+# /src/CMakeLists.txt
+# /src/CMakeLists.txt.*
+
+# Bag Files
+bags/
 
 # Python
 *.pyo
@@ -15,11 +18,11 @@ ros/.catkin_workspace
 */*~
 
 # VSCode Files
-.vscode
-**/.vsocde
-.idea/
 .dir-locals.el
 cmake-build-debug
+**/.vscode/
+**/.idea/
+cmake-build*/
 
 # Emacs/Spacemacs Autosaves
 .#*
