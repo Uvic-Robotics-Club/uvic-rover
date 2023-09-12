@@ -6,7 +6,7 @@
 
 
 #include <ros.h>
-#include "drivetrain/Speed.h"
+#include "uvic_rover/Speed.h"
 //
 //// PWM pins
 #define LEFT_BACK_PIN 4

@@ -8,7 +8,7 @@
 
 from time import time
 import rospy
-from drivetrain.msg import Speed
+from uvic_rover.msg import Speed
 from sensor_msgs.msg import Joy
 MAX_VAL = 100
 X_AXIS_DEADZONE = 0.25 * MAX_VAL

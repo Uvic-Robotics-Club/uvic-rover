@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+
+<robot name="UVicArm">
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="orange">
+    <color rgba="1 0.7 0 1"/>
+  </material>
+  <material name="green">
+    <color rgba="0 0.8 0 1"/>
+  </material>
+  <material name="rcolor">
+    <color rgba="0.5 0.8 0.5 1"/>
+  </material>
+  <material name="rcolor2">
+    <color rgba="0.7 0.3 0.2 1"/>
+  </material>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://uvic_rover/rover_description/Arm/BaseMotor.STL"/>
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="-115 115 0"/>
+    </visual>
+  </link>
+
+  <link name="base_component">
+    <visual>
+      <geometry>
+        <mesh filename="package://uvic_rover/rover_description/Arm/BaseComponent.STL"/>
+      </geometry>
+      <material name="blue"/>
+      <origin rpy="0 0 0" xyz="-70.5 0 -70.5"/>
+
+    </visual>
+  </link>
+
+  <link name="shoulder">
+    <visual>
+      <geometry>
+        <mesh filename="package://uvic_rover/rover_description/Arm/Shoulder.STL"/>
+      </geometry>
+      <origin rpy="-1.57075 0 1.57075" xyz="15.5 -55 55"/>
+      <material name="orange"/>
+
+    </visual>
+  </link>
+
+  <link name="elbow_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://uvic_rover/rover_description/Arm/ElbowLink2.STL"/>
+      </geometry>
+      <material name="green"/>
+      <origin rpy="0 0 0" xyz="-95.5 -162 -71"/>
+    </visual>
+  </link>
+
+  <link name="wrist_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://uvic_rover/rover_description/Arm/Wrist.STL"/>
+      </geometry>
+      <material name="rcolor"/>
+      <origin rpy="0 0 0" xyz="-59.1 -66.8 -89.5"/>
+    </visual>
+  </link>
+
+  <link name="gripper">
+    <visual>
+      <geometry>
+        <mesh filename="package://uvic_rover/rover_description/Arm/Gripper.STL"/>
+      </geometry>
+      <origin rpy="0 3.14 0 " xyz="6 -34.8 80 "/>
+      <material name="rcolor2"/>
+    </visual>
+  </link>
+
+  <joint name="base_motor_to_base" type="continuous">
+    <parent link="base_link"/>
+    <child link="base_component"/>
+    <origin rpy="1.57075  0 0" xyz="0 0 210"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="base_to_shoulder" type="continuous">
+    <parent link="base_component"/>
+    <child link="shoulder"/>
+      <origin rpy="0 0 0" xyz="-40 70 0"/>
+      <axis xyz="1 0 0"/>
+
+  </joint>
+
+  <joint name="shoulder_to_elbow" type="continuous">
+    <parent link="shoulder"/>
+    <child link="elbow_link"/>
+    <origin rpy="0 0 0" xyz="0 320 0"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+
+  <joint name="elbow_to_wrist" type="continuous">
+    <parent link="elbow_link"/>
+    <child link="wrist_link"/>
+    <origin rpy="-3.14 1.57075 0" xyz=" 0 -1.5 291.5"/>
+        <axis xyz="0 0 1"/>
+  </joint>
+
+  <joint name="wrist_to_gripper" type="continuous">
+    <parent link="wrist_link"/>
+    <child link="gripper"/>
+    <origin rpy="0 0 0" xyz="-60 0 44 "/>
+    <axis xyz="1 0 0"/>
+  </joint>
+
+
+</robot>
