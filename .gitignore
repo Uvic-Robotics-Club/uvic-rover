@@ -24,6 +24,9 @@ cmake-build-debug
 **/.idea/
 cmake-build*/
 
+#CI/CD act library
+bin/
+
 # Emacs/Spacemacs Autosaves
 .#*
 .dir-locals.el
