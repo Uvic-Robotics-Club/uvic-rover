@@ -2,7 +2,7 @@
 
   <arg name="model" default="$(find uvic_rover)/rover_description/UVicArm.urdf"/>
   <arg name="gui" default="true" />
-  <arg name="rvizconfig" default="$(find uvic_rover)/rover_description/Arm/rviz/urdf.rviz" />
+  <arg name="rvizconfig" default="$(find uvic_rover)/rover_description/Arm/urdf.rviz" />
 
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
 
