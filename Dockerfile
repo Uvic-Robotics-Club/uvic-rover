@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y
 
 RUN useradd --create-home --groups sudo --shell /bin/zsh uvic
-# Give mrover user sudo access with no password
+# Give uvic user sudo access with no password
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 USER uvic
