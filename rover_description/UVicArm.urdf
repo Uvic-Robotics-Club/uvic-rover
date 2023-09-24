@@ -2,19 +2,7 @@
 
 
 
-  <link name="base_link">
-    <visual>
-      <geometry>
-        <mesh filename="package://uvic_rover/rover_description/Arm/BaseMotor.STL"/>
-      </geometry>
-      <origin rpy="1.57075 0 0" xyz="-115 115 0"/>
-    </visual>
-    <collision>
-      <geometry>
-        <mesh filename="package://uvic_rover/rover_description/Arm/BaseMotor.STL"/>
-      </geometry>
-    </collision>
-  </link>
+
 
   <link name="base_component">
     <visual>
