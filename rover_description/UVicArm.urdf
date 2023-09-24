@@ -1,21 +1,6 @@
 <?xml version="1.0"?>
 
-<robot name="UVicArm">
-  <material name="blue">
-    <color rgba="0 0 0.8 1"/>
-  </material>
-  <material name="orange">
-    <color rgba="1 0.7 0 1"/>
-  </material>
-  <material name="green">
-    <color rgba="0 0.8 0 1"/>
-  </material>
-  <material name="rcolor">
-    <color rgba="0.5 0.8 0.5 1"/>
-  </material>
-  <material name="rcolor2">
-    <color rgba="0.7 0.3 0.2 1"/>
-  </material>
+
 
   <link name="base_link">
     <visual>
