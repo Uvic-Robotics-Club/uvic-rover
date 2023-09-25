@@ -46,6 +46,10 @@
       </geometry>
       <origin rpy="0 0 0" xyz="-70.5 0 -70.5"/>
     </collision>
+    <inertial>
+      <mass value="1.8"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
   </link>
 
   <link name="shoulder">
@@ -62,6 +66,10 @@
       </geometry>
       <origin rpy="-1.57075 0 1.57075" xyz="15.5 -55 55"/>
     </collision>
+    <inertial>
+      <mass value="1.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
   </link>
 
   <link name="elbow_link">
@@ -78,6 +86,10 @@
       </geometry>
       <origin rpy="0 0 0" xyz="-95.5 -162 -71"/>
     </collision>
+    <inertial>
+      <mass value="1.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
   </link>
 
   <link name="wrist_link">
@@ -94,6 +106,10 @@
       </geometry>
       <origin rpy="0 0 0" xyz="-59.1 -66.8 -89.5"/>
     </collision>
+    <inertial>
+      <mass value="0.382"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
   </link>
 
   <link name="gripper">
@@ -110,6 +126,10 @@
       </geometry>
       <origin rpy="0 3.14 0 " xyz="6 -34.8 80 "/>
     </collision>
+    <inertial>
+      <mass value="0.250"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
   </link>
 
   <joint name="base_motor_to_base" type="continuous">
