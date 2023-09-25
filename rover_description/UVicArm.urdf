@@ -28,6 +28,7 @@
       <geometry>
         <mesh filename="package://uvic_rover/rover_description/Arm/BaseMotor.STL"/>
       </geometry>
+      <origin rpy="1.57075 0 0" xyz="-115 115 0"/>
     </collision>
   </link>
 
@@ -43,6 +44,7 @@
       <geometry>
         <mesh filename="package://uvic_rover/rover_description/Arm/BaseComponent.STL"/>
       </geometry>
+      <origin rpy="0 0 0" xyz="-70.5 0 -70.5"/>
     </collision>
   </link>
 
@@ -58,6 +60,7 @@
       <geometry>
         <mesh filename="package://uvic_rover/rover_description/Arm/Shoulder.STL"/>
       </geometry>
+      <origin rpy="-1.57075 0 1.57075" xyz="15.5 -55 55"/>
     </collision>
   </link>
 
@@ -73,6 +76,7 @@
       <geometry>
         <mesh filename="package://uvic_rover/rover_description/Arm/ElbowLink2.STL"/>
       </geometry>
+      <origin rpy="0 0 0" xyz="-95.5 -162 -71"/>
     </collision>
   </link>
 
@@ -88,6 +92,7 @@
       <geometry>
         <mesh filename="package://uvic_rover/rover_description/Arm/Wrist.STL"/>
       </geometry>
+      <origin rpy="0 0 0" xyz="-59.1 -66.8 -89.5"/>
     </collision>
   </link>
 
@@ -103,6 +108,7 @@
       <geometry>
         <mesh filename="package://uvic_rover/rover_description/Arm/Gripper.STL"/>
       </geometry>
+      <origin rpy="0 3.14 0 " xyz="6 -34.8 80 "/>
     </collision>
   </link>
 
