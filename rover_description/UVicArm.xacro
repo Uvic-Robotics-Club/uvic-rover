@@ -19,6 +19,8 @@
 
   <xacro:property name="filepath" value="package://uvic_rover/rover_description/Arm/" />
 
+  <xacro:include filename="$(find uvic_rover)/rover_description/UVicArm.gazebo" />
+
   <xacro:macro name="default_inertial" params="mass">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>

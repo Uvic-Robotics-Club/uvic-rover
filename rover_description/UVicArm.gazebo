@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot>
+<gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/simple_robot </robotNamespace>
+    </plugin>
+</gazebo>
+
+<gazebo reference="base_link">
+<mu1>0.2</mu1>
+<mu2>0.2</mu2>
+</gazebo>
+
+<gazebo reference="base_component">
+<mu1>0.2</mu1>
+<mu2>0.2</mu2>
+</gazebo>
+
+<gazebo reference="shoulder">
+<mu1>0.2</mu1>
+<mu2>0.2</mu2>
+</gazebo>
+
+<gazebo reference="elbow_link">
+<mu1>0.2</mu1>
+<mu2>0.2</mu2>
+</gazebo>
+
+<gazebo reference="wrist_link">
+<mu1>0.2</mu1>
+<mu2>0.2</mu2>
+</gazebo>
+
+<gazebo reference="gripper">
+<mu1>0.2</mu1>
+<mu2>0.2</mu2>
+</gazebo>
+
+</robot>
