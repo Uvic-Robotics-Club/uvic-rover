@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <robot>
-<gazebo>
+<!-- <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
         <robotNamespace>/simple_robot </robotNamespace>
     </plugin>
-</gazebo>
+</gazebo> -->
 
 <gazebo reference="base_link">
 <mu1>0.2</mu1>

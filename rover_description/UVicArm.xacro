@@ -49,11 +49,13 @@
 
 
   <link name="base_link">
-    <visual>
+    <xacro:default_inertial mass="1.8"/>
+    <visual name="">
       <geometry>
         <mesh filename="${filepath}BaseMotor.STL"/>
       </geometry>
       <origin rpy="${base_link_rpy}" xyz="${base_link_xyz}"/>
+      <material name=""/>
     </visual>
     <collision>
       <geometry>
