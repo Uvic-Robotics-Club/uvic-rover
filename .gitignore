@@ -30,3 +30,4 @@ bin/
 # Emacs/Spacemacs Autosaves
 .#*
 .dir-locals.el
+src/IMU/LSM9DS1_Basic_I2C/data/SparkFun_LSM9DS1_Arduino_Library-master.zip
