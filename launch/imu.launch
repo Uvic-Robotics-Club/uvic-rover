@@ -1,0 +1,10 @@
+<launch>
+    <node
+        pkg="rosserial_python"
+        type="serial_node.py"
+        name="ArduinoArm"
+        args="/dev/ttyACM0"
+    >
+    <param name="baud" type="int" value="9600"/>
+    </node>
+</launch>
