@@ -25,7 +25,7 @@
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="${mass}" />
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+      <inertia ixx="100" ixy="0.0" ixz="0.0" iyy="100" iyz="0.0" izz="100"/>
     </inertial>
   </xacro:macro>
 
@@ -48,8 +48,15 @@
   <xacro:property name="gripper_xyz" value="6 -34.8 80" />
 
 
+  <link name="world"/>
+
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
+
+
   <link name="base_link">
-    <xacro:default_inertial mass="1.8"/>
     <visual name="">
       <geometry>
         <mesh filename="${filepath}BaseMotor.STL"/>
@@ -63,6 +70,7 @@
       </geometry>
       <origin rpy="${base_link_rpy}" xyz="${base_link_xyz}"/>
     </collision>
+    <xacro:default_inertial mass="1000"/>
   </link>
 
   <link name="base_component">
@@ -79,7 +87,7 @@
       </geometry>
       <origin rpy="${base_component_rpy}" xyz="${base_component_xyz}"/>
     </collision>
-    <xacro:default_inertial mass="1.8"/>
+    <xacro:default_inertial mass="1000"/>
   </link>
 
   <link name="shoulder">
@@ -96,7 +104,7 @@
       </geometry>
       <origin rpy="${shoulder_rpy}" xyz="${shoulder_xyz}"/>
     </collision>
-    <xacro:default_inertial mass="1.1"/>
+    <xacro:default_inertial mass="1000"/>
   </link>
 
   <link name="elbow_link">
@@ -113,7 +121,7 @@
       </geometry>
       <origin rpy="${elbow_link_rpy}" xyz="${elbow_link_xyz}"/>
     </collision>
-    <xacro:default_inertial mass="1.1"/>
+    <xacro:default_inertial mass="1000"/>
   </link>
 
   <link name="wrist_link">
@@ -130,7 +138,7 @@
       </geometry>
       <origin rpy="${wrist_link_rpy}" xyz="${wrist_link_xyz}"/>
     </collision>
-    <xacro:default_inertial mass="0.382"/>
+    <xacro:default_inertial mass="1000"/>
   </link>
 
   <link name="gripper">
@@ -147,7 +155,7 @@
       </geometry>
       <origin rpy="${gripper_rpy}" xyz="${gripper_xyz}"/>
     </collision>
-    <xacro:default_inertial mass="0.250"/>
+    <xacro:default_inertial mass="100"/>
   </link>
 
   <joint name="base_motor_to_base" type="continuous">
