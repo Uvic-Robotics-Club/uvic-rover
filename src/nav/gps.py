@@ -10,6 +10,7 @@ import time
 import adafruit_gps
 import rospy
 from sensor_msgs.msg import NavSatFix
+from gps_common.msg import GPSFix
 # Create a serial connection for the GPS connection using default speed and
 # a slightly higher timeout (GPS modules typically update once a second).
 # These are the defaults you should use for the GPS FeatherWing.
@@ -18,23 +19,21 @@ from sensor_msgs.msg import NavSatFix
 
 # for a computer, use the pyserial library for uart access
 
-
-
-#PUT THIS BACK INTO MAIN AFTER UART INIT
-
 import serial
 def main():
     uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=10)
-
     # Initialize GPS Ros node 
     rospy.init_node('gps_talker')
-    pub = rospy.Publisher('GPS', NavSatFix, queue_size=10)    
-    msg = NavSatFix()
-    msg.header.frame_id = "/map"
+
+    navsatfix_pub = rospy.Publisher('GPS_NavSatFix', NavSatFix, queue_size=10)    
+    navsatfix_msg = NavSatFix()
+    navsatfix_msg.header.frame_id = "/map1" #used to be /map
+
+    common_pub = rospy.Publisher('GPS_Common', GPSFix, queue_size=10) 
+    common_msg = GPSFix()
+    common_msg.header.frame_id = "/map2"
 
     rate = rospy.Rate(1)
-
-
     # Create a GPS module instance.
     gps = adafruit_gps.GPS(uart, debug=False)  # Use UART/pyserial
     # gps = adafruit_gps.GPS_GtopI2C(i2c, debug=False)  # Use I2C interface
@@ -82,13 +81,20 @@ def main():
             # We have a fix! (gps.has_fix is true)
             
             # Put gps data into navstat
-            msg.latitude = gps.latitude
-            msg.longitude = gps.longitude
-            msg.altitude = gps.altitude_m
-            msg.status.status = 1
-            msg.status.service = 1
-            pub.publish(msg)
-            
+            navsatfix_msg.latitude = gps.latitude
+            navsatfix_msg.longitude = gps.longitude
+            navsatfix_msg.altitude = gps.altitude_m
+            navsatfix_msg.status.status = 1
+            navsatfix_msg.status.service = 1
+
+            common_msg.latitude = gps.latitude
+            common_msg.longitude = gps.longitude
+            common_msg.altitude = gps.altitude_m
+            common_msg.status.status = 1
+
+            navsatfix_pub.publish(navsatfix_msg)
+            common_pub.publish(common_msg)
+
             # Print out details about the fix like location, date, etc.
             print("=" * 40)  # Print a separator line.           
             print(
@@ -128,7 +134,6 @@ def main():
             #     print("Horizontal dilution: {}".format(gps.horizontal_dilution))
             # if gps.height_geoid is not None:
             #     print("Height geoid: {} meters".format(gps.height_geoid))
-
 
 if __name__ == "__main__":
     try:

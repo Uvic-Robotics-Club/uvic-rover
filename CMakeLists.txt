@@ -255,6 +255,6 @@ endif ()
 
 # Install Python scripts I ADDED THIS (TEST)
 catkin_install_python(PROGRAMS
-  src/gps.py
+  src/nav/gps.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
