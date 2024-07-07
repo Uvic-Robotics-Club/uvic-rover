@@ -252,3 +252,9 @@ install_launch_macro()
 if (COMMAND additional_install_macro)
     additional_install_macro()
 endif ()
+
+# Install Python scripts I ADDED THIS (TEST)
+catkin_install_python(PROGRAMS
+  src/nav/gps.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
