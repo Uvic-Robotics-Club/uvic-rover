@@ -1,0 +1,15 @@
+<launch>
+    <group>
+        <remap from='joy' to='j1'/>
+        <node pkg='joy' name='logitech' type='joy_node'>
+            <param name='dev' type='string' value='/dev/input/js1'/>
+        </node>
+    </group>
+
+
+  <node pkg="uvic_rover" type="drive.py" name="motor_controller">
+    <param name="max_velocity" value="1.0" />
+    <param name="axis_linear" value="1" />
+  </node>
+
+</launch>

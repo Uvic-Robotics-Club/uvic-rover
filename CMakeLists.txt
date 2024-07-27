@@ -17,6 +17,7 @@ set(ROVER_PACKAGES
         rosserial_client
         joy
         cv_bridge
+        phidgets_api
         )
 
 # Message files

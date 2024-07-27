@@ -101,6 +101,10 @@
   <exec_depend>rosserial_client</exec_depend>
 
 
+  <!-- Drive -->
+  <build_depend>phidgets_api</build_depend>
+  <build_export_depend>phidgets_api</build_export_depend>
+  <exec_depend>phidgets_api</exec_depend>
 
   <!-- Test-->
   <test_depend>rosunit</test_depend>
