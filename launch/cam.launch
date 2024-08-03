@@ -1,0 +1,31 @@
+<launch>
+    <!-- Launch the first USB camera -->
+    <node name="usb_cam_1" pkg="usb_cam" type="usb_cam_node" output="screen">
+        <param name="video_device" value="/dev/video0" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+        <param name="pixel_format" value="mjpeg" />
+        <param name="camera_frame_id" value="usb_cam_1_frame" />
+        <remap from="image_raw" to="/usb_cam_1/image_raw" />
+    </node>
+
+    <!-- Launch the second USB camera -->
+    <node name="usb_cam_2" pkg="usb_cam" type="usb_cam_node" output="screen">
+        <param name="video_device" value="/dev/video1" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+        <param name="pixel_format" value="mjpeg" />
+        <param name="camera_frame_id" value="usb_cam_2_frame" />
+        <remap from="image_raw" to="/usb_cam_2/image_raw" />
+    </node>
+
+    <!-- Launch rqt_image_view -->
+    <node name="rqt_image_view" pkg="rqt_image_view" type="rqt_image_view" output="screen">
+        <remap from="/image" to="/usb_cam_1/image_raw" />
+    </node>
+
+    <!-- Launch a second instance of rqt_image_view for the second camera -->
+    <node name="rqt_image_view_2" pkg="rqt_image_view" type="rqt_image_view" output="screen">
+        <remap from="/image" to="/usb_cam_2/image_raw" />
+    </node>
+</launch>
