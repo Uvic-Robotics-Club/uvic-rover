@@ -1,31 +1,16 @@
 <launch>
-    <!-- Launch the first USB camera -->
-    <node name="usb_cam_1" pkg="usb_cam" type="usb_cam_node" output="screen">
-        <param name="video_device" value="/dev/video0" />
-        <param name="image_width" value="640" />
-        <param name="image_height" value="480" />
-        <param name="pixel_format" value="mjpeg" />
-        <param name="camera_frame_id" value="usb_cam_1_frame" />
-        <remap from="image_raw" to="/usb_cam_1/image_raw" />
-    </node>
+  <arg name="image_view" default="false" />
 
-    <!-- Launch the second USB camera -->
-    <node name="usb_cam_2" pkg="usb_cam" type="usb_cam_node" output="screen">
-        <param name="video_device" value="/dev/video1" />
-        <param name="image_width" value="640" />
-        <param name="image_height" value="480" />
-        <param name="pixel_format" value="mjpeg" />
-        <param name="camera_frame_id" value="usb_cam_2_frame" />
-        <remap from="image_raw" to="/usb_cam_2/image_raw" />
-    </node>
+  <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+      <rosparam command="load" file="/home/summit-uvic/catkin_ws/src/uvic_rover/src/cam/cam0.yml"/>
+  </node>
+  <node if="$(arg image_view)" name="image_view" pkg="image_view" type="image_view"
+        respawn="false" output="screen">
+    <remap from="image" to="/usb_cam/image_raw"/>
+    <param name="autosize" value="true" />
+  </node>
 
-    <!-- Launch rqt_image_view -->
-    <node name="rqt_image_view" pkg="rqt_image_view" type="rqt_image_view" output="screen">
-        <remap from="/image" to="/usb_cam_1/image_raw" />
-    </node>
+  <node name="rqt" pkg="rqt_gui" type="rqt_gui" output="screen"/>
 
-    <!-- Launch a second instance of rqt_image_view for the second camera -->
-    <node name="rqt_image_view_2" pkg="rqt_image_view" type="rqt_image_view" output="screen">
-        <remap from="/image" to="/usb_cam_2/image_raw" />
-    </node>
+
 </launch>
