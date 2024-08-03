@@ -10,7 +10,6 @@
     <param name="autosize" value="true" />
   </node>
 
-  <node name="rqt" pkg="rqt_gui" type="rqt_gui" output="screen"/>
 
 
 </launch>
