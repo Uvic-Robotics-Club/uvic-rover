@@ -18,7 +18,7 @@ ros::Publisher debug_pub("debug_info", &debug_msg);
 void motorCommandCallback(const std_msgs::Float32& cmd_msg) {
   float command = cmd_msg.data;
   int motorSpeed = map(command * 100, -100, 100, 0, 180); 
-  int motorSpeedright = map(command * 100, -100, 100, 0, 180); 
+  int motorSpeedright = map(command * 75, -100, 100, 180, 0); 
 
 
   char buf[50];

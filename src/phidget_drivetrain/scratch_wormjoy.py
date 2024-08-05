@@ -6,7 +6,7 @@ from std_msgs.msg import Float32
 
 def joy_callback(data):
     motor_command = Float32()
-    motor_command.data = data.axes[1]  # Assuming the joystick's forward/backward axis is axes[1]
+    motor_command.data = data.axes[4]  # Assuming the joystick's forward/backward axis is axes[1]
 
     # Implement a button to reset the motor position
     if data.buttons[0] == 1:  # Assuming the reset button is button 0
