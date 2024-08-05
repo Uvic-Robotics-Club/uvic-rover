@@ -1,6 +1,8 @@
 <launch>
   <!-- Start the joystick node -->
-  <!-- <node pkg="joy" type="joy_node" name="joy_node" output="screen" /> -->
+  <node pkg="joy" type="joy_node" name="joy_node" output="screen">
+        <param name='dev' type='string' value='/dev/input/js1'/>
+  </node>
 
   <!-- Start the joy_to_motor node -->
   <node pkg="uvic_rover" type="scratch_wormjoy.py" name="joy_to_motor" output="screen" />
@@ -10,4 +12,6 @@
     <param name="port" value="/dev/ttyACM0"/> <!-- Adjust the port as needed -->
     <param name="baud" value="57600"/> <!-- Adjust the baud rate as needed -->
   </node>
+
+
 </launch>
