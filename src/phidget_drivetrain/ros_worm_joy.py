@@ -8,7 +8,8 @@ class WheelController:
     def __init__(self):
         rospy.init_node('wheel_controller')
         
-        self.motor_pub = rospy.Publisher('motor_commands', Float32MultiArray, queue_size=10)
+        # self.motor_pub = rospy.Publisher('motor_commands', Float32MultiArray, queue_size=10)
+        self.motor_pwm = rospy.Publisher('motor_pwm', Float32MultiArray, queue_size=10)
         self.home_pub = rospy.Publisher('home_command', Bool, queue_size=10)
         rospy.Subscriber('joy', Joy, self.joy_callback)
         
@@ -23,7 +24,7 @@ class WheelController:
         self.motor_cmd.data[1] = joy_msg.axes[0]
         
         # Publish motor commands
-        self.motor_pub.publish(self.motor_cmd)
+        # self.motor_pub.publish(self.motor_cmd)
         
         # Check if home button is pressed (assuming it's button 2)
         if joy_msg.buttons[2] == 1:
