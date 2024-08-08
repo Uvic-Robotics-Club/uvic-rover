@@ -1,12 +1,20 @@
 #include <ros.h>
 #include <std_msgs/Int16.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/Int32.h>
+#include <Encoder.h>
 
 // Pin definitions for motor control
 const int LEFT_MOTOR_PWM_PIN = 5;   // PWM pin for left motor
 const int LEFT_MOTOR_DIR_PIN = 4;   // Direction pin for left motor
 const int RIGHT_MOTOR_PWM_PIN = 6;  // PWM pin for right motor
 const int RIGHT_MOTOR_DIR_PIN = 7;  // Direction pin for right motor
+
+// Pin definitions for encoders
+const int LEFT_ENCODER_PIN_A = 2;   // Left encoder pin A
+const int LEFT_ENCODER_PIN_B = 3;   // Left encoder pin B
+const int RIGHT_ENCODER_PIN_A = 18; // Right encoder pin A (A4 on Mega)
+const int RIGHT_ENCODER_PIN_B = 19; // Right encoder pin B (A5 on Mega)
 
 ros::NodeHandle nh;
 
@@ -15,6 +23,18 @@ int left_pwm = 0;
 bool left_dir = true;
 int right_pwm = 0;
 bool right_dir = true;
+
+// Encoder objects
+Encoder leftEncoder(LEFT_ENCODER_PIN_A, LEFT_ENCODER_PIN_B);
+Encoder rightEncoder(RIGHT_ENCODER_PIN_A, RIGHT_ENCODER_PIN_B);
+
+// ROS message objects for publishing encoder values
+std_msgs::Int32 left_encoder_msg;
+std_msgs::Int32 right_encoder_msg;
+
+// ROS publishers for encoder values
+ros::Publisher left_encoder_pub("left_encoder", &left_encoder_msg);
+ros::Publisher right_encoder_pub("right_encoder", &right_encoder_msg);
 
 // Callback functions for subscribers
 void leftPwmCallback(const std_msgs::Int16& msg) {
@@ -58,9 +78,23 @@ void setup() {
   nh.subscribe(left_dir_sub);
   nh.subscribe(right_pwm_sub);
   nh.subscribe(right_dir_sub);
+
+  // Advertise encoder topics
+  nh.advertise(left_encoder_pub);
+  nh.advertise(right_encoder_pub);
 }
 
 void loop() {
+  // Read encoder values
+  long left_encoder_value = leftEncoder.read();
+  long right_encoder_value = rightEncoder.read();
+
+  // Publish encoder values
+  left_encoder_msg.data = left_encoder_value;
+  right_encoder_msg.data = right_encoder_value;
+  left_encoder_pub.publish(&left_encoder_msg);
+  right_encoder_pub.publish(&right_encoder_msg);
+
   nh.spinOnce();
-  delay(1);
+  delay(10); // Small delay to control publish rate (100 Hz)
 }
