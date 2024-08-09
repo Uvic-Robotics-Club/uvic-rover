@@ -10,7 +10,7 @@ jetson setup
     - mostly arduino ports
 - time server linux chrony time
     - im sorry forgot how to do it
-
+asd
 
 ros 
 
