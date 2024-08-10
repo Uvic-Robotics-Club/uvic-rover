@@ -4,6 +4,7 @@
         <param name='dev' type='string' value='/dev/input/js0'/>
   </node>
 
+  <node pkg="uvic_rover" type="sam_linux.py" name="IK_to_string" output="screen" />
 
 
 
