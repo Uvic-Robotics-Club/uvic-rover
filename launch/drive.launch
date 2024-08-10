@@ -8,7 +8,7 @@
 
 
   <!-- Start the joy_to_motor node -->
-  <!-- <node pkg="uvic_rover" type="phidget_simple_drive.py" name="joy_to_motor" output="screen" /> -->
+  <node pkg="uvic_rover" type="phidget_simple_drive.py" name="joy_to_motor" output="screen" />
 
   <!-- Start the rosserial node to communicate with Arduino -->
 
