@@ -98,14 +98,73 @@ def IK(p_end):
     joints = np.array([theta1, theta2, theta3, theta4, theta5, theta6])
     return joints
 
-def main():
-    parser = argparse.ArgumentParser(description="Calculate inverse kinematics for a 6-DOF robot.")
-    parser.add_argument('p_end', type=float, nargs=6, help="End effector position and orientation (x, y, z, roll, pitch, yaw)")
-    args = parser.parse_args()
+#!/usr/bin/env python3
 
-    p_end = np.array(args.p_end)
-    joints = IK(p_end)
-    print("Joint angles:", joints)
+import rospy
+import numpy as np
+from sensor_msgs.msg import Joy
+from std_msgs.msg import String
+import math
+class JoyIKNode:
+    def __init__(self):
+        rospy.init_node('joy_ik_node', anonymous=True)
+        
+        # Subscribe to joy topic
+        rospy.Subscriber("joy", Joy, self.joy_callback)
+        
+        # Create a publisher for String messages
+        self.pub = rospy.Publisher("ik_result", String, queue_size=10)
+        
+        # Set the loop rate (10 Hz)
+        self.rate = rospy.Rate(10)
+        
+        # Initialize end-effector position and orientation
+        self.p_end = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+        
+        # Set step sizes for position and orientation changes
+        self.pos_step = 1  # 1 mm
+        self.rot_step = 2*(math.pi/180)  # radians
+        
+    def joy_callback(self, data):
+        # Update end-effector position and orientation based on joystick input
+        # Left stick: X and Y position
+        self.p_end[0] += data.axes[1] * self.pos_step
+        # self.p_end[1] += data.axes[1] * self.pos_step
+        
+        # # Right stick: Z position and rotation around Z
+        # self.p_end[2] += data.axes[3] * self.pos_step
+        # self.p_end[3] += data.axes[2] * self.rot_step
+        
+        # # Buttons: rotation around X and Y
+        # if data.buttons[4]:  # Left bumper
+        #     self.p_end[4] += self.rot_step
+        # if data.buttons[5]:  # Right bumper
+        #     self.p_end[4] -= self.rot_step
+        # if data.buttons[6]:  # Left trigger
+        #     self.p_end[5] += self.rot_step
+        # if data.buttons[7]:  # Right trigger
+        #     self.p_end[5] -= self.rot_step
+        
+        # # Call IK function
+        # try:
+        # joints = IK(self.p_end)
+        print(self.p_end)
+        #     # Create a string message with the joint angles
+        #     msg = String()
+        #     msg.data = f"Joint angles: {', '.join([f'{j:.4f}' for j in joints])}"
+            
+        #     # Publish the string message
+        #     self.pub.publish(msg)
+        # except Exception as e:
+        #     rospy.logerr(f"IK calculation failed: {str(e)}")
+        
+    def run(self):
+        while not rospy.is_shutdown():
+            self.rate.sleep()
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    try:
+        node = JoyIKNode()
+        node.run()
+    except rospy.ROSInterruptException:
+        pass 
