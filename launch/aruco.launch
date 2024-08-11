@@ -1,0 +1,11 @@
+<launch>
+  <!-- Start the joystick node -->
+
+
+  <node pkg="uvic_rover" type="aruco_ros.py" name="gripper_mega" output="screen" />
+
+
+
+
+
+</launch>

@@ -1,0 +1,17 @@
+Visualization Manager:
+  - Fixed Frame: "zed2i_left_camera_frame"
+
+Displays:
+  - Name: RGB Image
+    Type: Image
+    Image Topic: "/zed2i/zed_node/rgb/image_rect_color"
+    Alpha: 1.0
+    Queue Size: 2
+    ...
+    
+  - Name: Depth Image
+    Type: Image
+    Image Topic: "/zed2i/zed_node/depth/depth_registered"
+    Color Scheme: "colormap"
+    Alpha: 1.0
+    Queue Size: 2
