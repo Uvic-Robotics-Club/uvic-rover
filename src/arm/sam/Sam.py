@@ -1,5 +1,11 @@
+#!/usr/bin/env python
+
 import numpy as np
-import argparse
+import math
+import rospy
+from sensor_msgs.msg import Joy
+from std_msgs.msg import String
+
 
 def IK(p_end):
     # knowns
@@ -98,13 +104,8 @@ def IK(p_end):
     joints = np.array([theta1, theta2, theta3, theta4, theta5, theta6])
     return joints
 
-#!/usr/bin/env python3
 
-import rospy
-import numpy as np
-from sensor_msgs.msg import Joy
-from std_msgs.msg import String
-import math
+
 class JoyIKNode:
     def __init__(self):
         rospy.init_node('joy_ik_node', anonymous=True)
@@ -158,13 +159,11 @@ class JoyIKNode:
         # except Exception as e:
         #     rospy.logerr(f"IK calculation failed: {str(e)}")
         
-    def run(self):
-        while not rospy.is_shutdown():
-            self.rate.sleep()
+
+
 
 if __name__ == '__main__':
     try:
         node = JoyIKNode()
-        node.run()
     except rospy.ROSInterruptException:
         pass 
