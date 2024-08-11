@@ -1,17 +1,14 @@
 <launch>
   <!-- Start the joystick node -->
-  <node pkg="joy" type="joy_node" name="joy_node" output="screen">
-        <param name='dev' type='string' value='/dev/input/js0'/>
+
+
+  <node pkg="uvic_rover" type="gripper.py" name="gripper_mega" output="screen" />
+
+
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen">
+    <param name="port" value="/dev/ttyACM0"/> 
+    <param name="baud" value="57600"/> 
   </node>
-
-  <node pkg="uvic_rover" type="sam_linux.py" name="IK_to_string" output="screen" />
-
-
-
-  <!-- Start the joy_to_motor node -->
-  <!-- <node pkg="uvic_rover" type="phidget_simple_drive.py" name="joy_to_motor" output="screen" /> -->
-
-  <!-- Start the rosserial node to communicate with Arduino -->
 
 
 

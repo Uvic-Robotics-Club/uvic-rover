@@ -1,7 +1,7 @@
 <launch>
   <!-- Start the joystick node -->
   <node pkg="joy" type="joy_node" name="joy_node" output="screen">
-        <param name='dev' type='string' value='/dev/input/js0'/>
+        <param name='dev' type='string' value='/dev/input/js1'/>
   </node>
 
   <!-- Start the joy_to_motor node -->
