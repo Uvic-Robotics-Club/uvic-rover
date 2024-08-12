@@ -1,0 +1,17 @@
+<launch>
+    <node name="camera1_node" pkg="usb_cam" type="usb_cam_node" output="screen">
+        <param name="video_device" value="/dev/video2" />
+        <param name="image_topic" value="/camera1/image_raw" />
+        <param name="camera_name" value="camera1" />
+        <param name="~image_transport" value="compressed"/>
+    </node>
+
+    <node name="camera2_node" pkg="usb_cam" type="usb_cam_node" output="screen">
+        <param name="video_device" value="/dev/video4" />
+        <param name="image_topic" value="/camera2/image_raw" />
+        <param name="camera_name" value="camera2" />
+        <param name="~image_transport" value="compressed"/>
+    </node>
+
+</launch>
+

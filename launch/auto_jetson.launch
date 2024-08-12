@@ -1,5 +1,14 @@
 <launch>
 
+  <node pkg="uvic_rover" type="phidget_simple_drive.py" name="joy_to_motor" output="screen" />
+
+
+    <node pkg="uvic_rover" type="aruco_ros_auto.py" name="aruco_ros" output="screen" />
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen">
+    <param name="port" value="/dev/ttyACM0"/> 
+    <param name="baud" value="57600"/> 
+  </node>
+
   <arg name="image_view" default="false" />
   <node name="usb_cam0" pkg="usb_cam" type="usb_cam_node" output="screen" >
       <rosparam command="load" file="/home/summit-uvic/catkin_ws/src/uvic_rover/src/cam/cam0.yml"/>
@@ -10,8 +19,6 @@
     <param name="autosize" value="true" />
   </node>
 
-
-
   <node name="usb_cam1" pkg="usb_cam" type="usb_cam_node" output="screen" >
       <rosparam command="load" file="/home/summit-uvic/catkin_ws/src/uvic_rover/src/cam/cam1.yml"/>
   </node>
@@ -20,6 +27,10 @@
     <remap from="image" to="/usb_cam/image_raw"/>
     <param name="autosize" value="true" />
   </node>
+
+  <include file="$(find zed_wrapper)/launch/zed2i.launch" />
+
+
 
 
 

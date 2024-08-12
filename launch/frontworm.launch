@@ -1,13 +1,11 @@
 <launch>
   <!-- Start the joystick node -->
-  <node pkg="joy" type="joy_node" name="joy_node" output="screen">
-        <param name='dev' type='string' value='/dev/input/js0'/>
-  </node>
 
   <!-- Start the joy_to_motor node -->
   <!-- <node pkg="uvic_rover" type="front_left_right_nopid.py" name="joy_to_frontworm" output="screen" /> -->
+  <node pkg="uvic_rover" type="phidget_simple_drive.py" name="joy_to_motor" output="screen" />
 
-  <node pkg="uvic_rover" type="front_left_right_nopid.py" name="joy_to_phidget" output="screen" />
+  <node pkg="uvic_rover" type="front_left_right_nopid.py" name="joyasdds_to_phidget" output="screen" />
 
 
   <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen">

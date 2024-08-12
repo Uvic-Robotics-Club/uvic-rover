@@ -37,14 +37,24 @@ class JoystickMotorControl:
         direction = joy_value >= 0
         
         # Publish PWM and direction for both motors
-        self.pub_left_pwm.publish(pwm_value)
-        self.pub_left_dir.publish(direction)
-        self.pub_right_pwm.publish(pwm_value)
-        self.pub_right_dir.publish(direction)
-
-        self.pub_back_pwm.publish(pwm_value)
-        self.pub_back_dir.publish(direction)
-
+        if(data.buttons[5] == 1):
+            self.pub_left_pwm.publish(pwm_value)
+            self.pub_left_dir.publish(direction)
+        elif(data.buttons[4] == 1):
+            self.pub_left_pwm.publish(pwm_value)
+            self.pub_left_dir.publish(not direction)
+        elif(data.buttons[1] == 1):
+            self.pub_right_pwm.publish(pwm_value)
+            self.pub_right_dir.publish(direction)
+        elif(data.buttons[2] == 1):
+            self.pub_right_pwm.publish(pwm_value)
+            self.pub_right_dir.publish(not direction)
+        else:
+        # Publish PWM and direction for both motors
+            self.pub_left_pwm.publish(pwm_value)
+            self.pub_left_dir.publish(not direction)
+            self.pub_right_pwm.publish(pwm_value)
+            self.pub_right_dir.publish(not direction)
 if __name__ == '__main__':
     try:
         JoystickMotorControl()

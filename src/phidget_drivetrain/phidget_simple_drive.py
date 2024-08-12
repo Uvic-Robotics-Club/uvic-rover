@@ -30,16 +30,18 @@ motors = {
 # Callback function for joy messages
 def joy_callback(data):
 
-    if data.buttons[1] == 1:
-        for motor in motors.values():
-            motor.setTargetVelocity(0)
+
+    if data.buttons[0] == 1:
+        motors['back_left'].setTargetVelocity(0)
+        motors['back_right'].setTargetVelocity(0)
+        motors['front_left'].setTargetVelocity(0)
+        motors['front_right'].setTargetVelocity(0)
         return
     else:
         motors['back_left'].setTargetVelocity(data.axes[4])
         motors['back_right'].setTargetVelocity(-data.axes[4])
         motors['front_left'].setTargetVelocity(-data.axes[4])
         motors['front_right'].setTargetVelocity(data.axes[4])
-
 
 def main():
 

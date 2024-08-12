@@ -1,9 +1,9 @@
+
 start_service_name: "start_capture" # Defines name suffix for std_srvs::Empty service which restarts suspended streaming
 stop_service_name: "stop_capture"   # Defines name suffix for std_srvs::Empty service which suspends camera polling timer
 
-video_device: /dev/video2           # Device driver's entrypoint
+video_device: /dev/video6           # Device driver's entrypoint
 io_method: mmap                     # I/O method
-image_transport: "compressed"
                                     # - read - for devices supporting virtual filesystem or block I/O
                                     # - mmap - for devices with direct libusb memory mapping
                                     # - userptr - for userspace devices supporting userspace pointer exchange
@@ -49,38 +49,3 @@ framerate: 60                       # Camera polling frequency, Hz (integer)
     # - vaapi - Intel QuickSync or AMD UVD/VCE decoder on compatible Intel chipsets or AMD Radeon GPUs
     # If the desired accelerated decoder is not available or FFMPEG does not respond correctly on the activation request,
     # the node falls back automatically to the default software decoder.
-hardware_decoder:
-    enable: false                   # Instructs the node to try to use a hardware-accelerated video decoder
-    name: cuda                      # Name of the desired decoder from FFMPEG HWACCEL API
-
-# Auxiliary camera parameters provided by libv4l2.
-    # Names for these parameters are generated automatically according to the intrinsic control names exported by the
-    # camera driver. The node queries camera's kernel controller module to determine the parameters that can be set up
-    # via ROS. For these parameters the corresponding ROS parameters with identical names are generated under this
-    # namespace.
-    # See also the comprehensive node output describing parameter names and feasible values for them to be set up here.
-    # It is also possible to have a list of the available control names using v4l2-ctl application from v4l2-util package:
-    # v4l2-ctl --device=/dev/video<ID> -L
-intrinsic_controls:                 
-    focus_auto: true
-    exposure_auto_priority: true
-    exposure_auto: 3
-    white_balance_temperature_auto: true
-    power_line_frequency: 1
-    ignore: [
-        brightness,
-        contrast,
-        saturation,
-        gain,
-        sharpness,
-        backlight_compensation,
-        white_balance_temperature,
-        exposure_absolute,
-        pan_absolute,
-        tilt_absolute,
-        focus_absolute,
-        zoom_absolute
-    ]                               # Use this list to enumerate the control names that should be delisted from the camera setup
-                                    # NOTE: the ROS parameters for the V4L controls supported but listed here would be STILL
-                                    # generated, but the values WILL NOT BE USED to set up the camera. To affect these controls
-                                    # once you want to do that, their names should me REMOVED from this list!
