@@ -1,0 +1,11 @@
+<launch>
+
+        <node pkg='joy' name='ps4' type='joy_node'>
+            <param name='dev' type='string' value='/dev/input/js0'/>
+        </node>
+
+    <node pkg="uvic_rover" type="aruco_ros.py" name="aruco_ros" output="screen" />
+    <!-- <node pkg="uvic_rover" type="detect_aurco_image.py" name="aruco_detection" output="screen" /> -->
+
+
+</launch>
