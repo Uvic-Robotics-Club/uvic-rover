@@ -1,12 +1,19 @@
-FROM ros:noetic
+FOM ros:noetic
 
 RUN apt-get update && apt-get upgrade -y
 # Add apt repo for latest version of Git
 RUN apt-get install software-properties-common -y && add-apt-repository ppa:git-core/ppa -y
+RUN wget -qO /usr/share/keyrings/phidgets.gpg \
+  https://www.phidgets.com/gpgkey/pubring.gpg
+echo deb [signed-by=/usr/share/keyrings/phidgets.gpg] \
+  http://www.phidgets.com/debian distro main \
+  > /etc/apt/sources.list.d/phidgets.list
 RUN apt-get update && apt-get install -y \
     zsh neovim sudo git git-lfs \
     clang-format-12 clang-tidy-12 \
-    python3-catkin-tools python3-pip
+    python3-catkin-tools python3-pip \
+    apt-get install libphidget22 \
+    apt-get install libphidget22-dev 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install keyboard-configuration -y
 
 RUN useradd --create-home --groups sudo --shell /bin/zsh uvic
