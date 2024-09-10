@@ -1,5 +1,11 @@
+# Used for CIRC 2024 Competition
 
-
+frontworm.launch (launched on rover)
+cam.launch (launched on rover)
+old/v2Joystick.launch (launched on base station)
+py3 gps.py (docker container)
+arm python file with cli interface
+aruco marker python script launched
 
 cameras + phidget + front worm gears
 
