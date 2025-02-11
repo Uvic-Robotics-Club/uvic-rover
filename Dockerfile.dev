@@ -1,0 +1,8 @@
+FROM ros:noetic-ros-core
+
+WORKDIR /app
+RUN mkdir -p /app
+COPY . /app
+
+CMD ["/bin/bash"]
+
