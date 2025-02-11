@@ -6,3 +6,9 @@ Click here to go to the [Wiki](https://github.com/Uvic-Robotics-Club/ROS-rover/w
 ## Cheese Deluxe (2023 CIRC)
 
 ![rover2023](https://github.com/Uvic-Robotics-Club/ROS-rover/assets/42494981/6ad63a31-c7e6-4dca-9484-24c6020416f9)
+
+
+
+sudo docker run -it my-ros-image /bin/bash
+
+sudo docker build -f Dockerfile.dev -t my-ros-image .
