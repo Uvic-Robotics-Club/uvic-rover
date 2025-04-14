@@ -3,9 +3,11 @@ sensor_timeout: 0.2
 two_d_mode: true
 transform_time_offset: 0.0
 
+publish_tf: true
+
 # Sensor sources
 imu0: /imu/data
-gps0: /GPS_NavSatFix
+gps0: /gps/fix
 
 # These boolean arrays tell the EKF which parts of the sensor message to use 
 # when updating its state estimate. Each index in the array corresponds to one 
